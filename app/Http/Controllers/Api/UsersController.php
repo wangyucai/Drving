@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Transformers\UserTransformer;
 use App\Http\Requests\Api\UserRequest;
+use App\Models\Image;
 
 class UsersController extends Controller
 {
@@ -108,6 +109,18 @@ class UsersController extends Controller
             ])
             ->setStatusCode(201);
     }
+
+    public function update(UserRequest $request)
+    {
+        $user = $this->user();
+
+        $attributes = $request->only(['username', 'email', 'personal_name', 'drive_school_name', 'registration_site', 'trainingground_site', 'class_introduction']);
+
+        $user->update($attributes);
+
+        return $this->response->item($user, new UserTransformer());
+    }
+
 
 }
 

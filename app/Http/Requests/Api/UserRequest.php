@@ -13,17 +13,37 @@ class UserRequest extends FormRequest
 
     public function rules()
     {
+        switch($this->method()) {
+            case 'POST':
+                return [
+                    'username' => 'required|between:3,25|regex:/^[A-Za-z0-9\-\_]+$/|unique:users,username',
+                    'password' => 'required|string|min:6',
+                    'email' => 'email',
+                    'personal_name' => 'required',
+                    'drive_school_name' => 'required',
+                    'registration_site' => 'required',
+                    'trainingground_site' => 'required',
+                    'class_introduction' => 'required',
+                    'captcha_key' => 'required|string',
+                    'captcha_code' => 'required|string',
+                ];
+                break;
+            case 'PATCH':
+                $userId = \Auth::guard('api')->id();
+                return [
+                    'username' => 'required|between:3,25|regex:/^[A-Za-z0-9\-\_]+$/|unique:users,username',
+                    'email' => 'email',
+                    'personal_name' => 'required',
+                    'drive_school_name' => 'required',
+                    'registration_site' => 'required',
+                    'trainingground_site' => 'required',
+                    'class_introduction' => 'required',
+                    'avatar_image_id' => 'exists:images,id,type,avatar,user_id,'.$userId,
+                ];
+                break;
+        }
         return [
-            'username' => 'required|between:3,25|regex:/^[A-Za-z0-9\-\_]+$/|unique:users,username',
-            'password' => 'required|string|min:6',
-            'email' => 'email',
-            'personal_name' => 'required',
-            'drive_school_name' => 'required',
-            'registration_site' => 'required',
-            'trainingground_site' => 'required',
-            'class_introduction' => 'required',
-            'captcha_key' => 'required|string',
-            'captcha_code' => 'required|string',
+
         ];
     }
 
