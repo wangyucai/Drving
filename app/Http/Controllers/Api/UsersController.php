@@ -87,6 +87,7 @@ class UsersController extends Controller
         $user = User::create([
             'username' => $request->username,
             'email' => $request->email,
+            'type' => 'student',
             'personal_name' => $request->personal_name,
             'drive_school_name' => $request->drive_school_name,
             'registration_site' => $request->registration_site,

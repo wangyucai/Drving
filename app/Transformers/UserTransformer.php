@@ -12,6 +12,7 @@ class UserTransformer extends TransformerAbstract
         return [
             'id' => $user->id,
             'username' => $user->username,
+            'type' => $user->type,
             'email' => $user->email,
             'personal_name' => $user->personal_name,
             'drive_school_name' => $user->drive_school_name,

@@ -24,7 +24,7 @@ $api->version('v1', [
         // 小程序登录
         $api->post('weapp/authorizations', 'AuthorizationsController@weappStore')
             ->name('api.weapp.authorizations.store');
-        // 小程序注册
+        // 小程序学员注册
         $api->post('weapp/users', 'UsersController@weappStore')
             ->name('api.weapp.users.store');
         // 刷新token
