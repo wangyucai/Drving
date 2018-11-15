@@ -38,7 +38,6 @@ class UserRequest extends FormRequest
                     'registration_site' => 'required',
                     'trainingground_site' => 'required',
                     'class_introduction' => 'required',
-                    'avatar_image_id' => 'exists:images,id,type,avatar,user_id,'.$userId,
                 ];
                 break;
         }

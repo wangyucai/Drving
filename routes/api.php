@@ -53,6 +53,10 @@ $api->version('v1', [
             // 编辑登录用户信息
             $api->patch('user', 'UsersController@update')
                 ->name('api.user.update');
+            // 支付宝提现
+            $api->post('cashes', 'WithdrawCashController@alipayToTransfer')
+                ->name('api.cashes.alipayToTransfer');
+
         });
     });
 });
