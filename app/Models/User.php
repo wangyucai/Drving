@@ -24,6 +24,11 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
+    public function image()
+    {
+        return $this->hasOne(Image::class, 'user_id');
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
