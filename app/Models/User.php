@@ -12,7 +12,7 @@ class User extends Authenticatable implements JWTSubject
 {
     // Rest omitted for brevity
     protected $fillable = [
-        'username', 'password', 'type', 'email', 'personal_name', 'drive_school_name', 'registration_site','trainingground_site', 'class_introduction','weixin_session_key', 'weapp_openid'
+        'username', 'password', 'type', 'email', 'personal_name', 'drive_school_name', 'registration_site','trainingground_site', 'class_introduction','weixin_session_key', 'weapp_openid','all_time','single_time','day_times'
     ];
 
     /**

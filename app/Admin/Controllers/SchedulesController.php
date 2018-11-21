@@ -48,6 +48,9 @@ class SchedulesController extends Controller
         $grid = new Grid(new Schedule);
 
         $grid->id('Id');
+        $grid->type('科目类型')->display(function ($value) {
+            return $value==2 ? '科目二' : '科目三';
+        });
         $grid->time('时间段');
         $grid->disableExport();
 
@@ -59,6 +62,7 @@ class SchedulesController extends Controller
         $show = new Show(Schedule::findOrFail($id));
 
         $show->id('Id');
+        $show->type('科目类型');
         $show->time('时间段');
 
         return $show;
@@ -67,7 +71,7 @@ class SchedulesController extends Controller
     protected function form()
     {
         $form = new Form(new Schedule);
-
+        $form->radio('type', '类型')->options(Schedule::$typeMap)->rules('required');
         $form->text('time', '时间段')->rules('required');
 
         return $form;

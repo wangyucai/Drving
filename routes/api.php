@@ -41,7 +41,9 @@ $api->version('v1', [
         'expires' => config('api.rate_limits.access.expires'),
     ], function ($api) {
         // 游客可以访问的接口
-
+            // 获取时刻表
+            $api->get('schedule', 'SchedulesController@index')
+                    ->name('api.schedule.index');
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {
             // 当前登录用户信息
@@ -53,6 +55,9 @@ $api->version('v1', [
             // 编辑登录用户信息
             $api->patch('user', 'UsersController@update')
                 ->name('api.user.update');
+            // 教练设置自己的时刻表
+            $api->patch('user/schedule', 'UsersController@schedule')
+                ->name('api.user.schedule');
             // 支付宝提现
             $api->post('cashes', 'WithdrawCashController@alipayToTransfer')
                 ->name('api.cashes.alipayToTransfer');

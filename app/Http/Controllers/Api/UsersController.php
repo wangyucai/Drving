@@ -121,7 +121,16 @@ class UsersController extends Controller
 
         return $this->response->item($user, new UserTransformer());
     }
+    // 设置时刻表
+    public function schedule(Request $request)
+    {
+        $user = $this->user();
 
+        $attributes = $request->only(['all_time', 'single_time', 'day_times']);
 
+        $user->update($attributes);
+        dd($user);
+        return $this->response->item($user, new UserTransformer());
+    }
 }
 

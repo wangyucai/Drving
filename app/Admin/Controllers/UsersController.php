@@ -57,7 +57,7 @@ class UsersController extends Controller
         $grid->username('用户名');
         $grid->personal_name('个人名称');
         $grid->email('邮箱');
-        $grid->is_directory('会员类型')->display(function ($value) {
+        $grid->type('会员类型')->display(function ($value) {
             return $value=='student' ? '学员' : '教练';
         });
         $grid->drive_school_name('驾校名称');
