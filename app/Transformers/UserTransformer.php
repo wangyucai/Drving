@@ -25,6 +25,8 @@ class UserTransformer extends TransformerAbstract
         }
         return [
             'id' => $user->id,
+            'username' => $user->username,
+            'avatar' => $user->avatar,
             'phone' => $user->phone,
             'carno' => $user->carno,
             'name' => $user->name,

@@ -32,7 +32,6 @@ class AuthorizationsController extends Controller
     {
         $code = $request->code;
         $userInfo = $request->userInfo;
-
         // 根据 code 获取微信 openid 和 session_key
         $miniProgram = \EasyWeChat::miniProgram();
         $data = $miniProgram->auth->session($code);
@@ -54,13 +53,13 @@ class AuthorizationsController extends Controller
             }
             // 创建用户
             $user = User::create([
+                'username' => $userInfo->nickName,
+                'avatar' => $request->avatarUrl,
                 'phone' => $request->phone,
                 'weapp_openid' => $data['openid'],
                 'weixin_session_key' => $data['session_key'],
             ]);
         }else{
-            // 判断输入的手机号和绑定的用户是否相同
-            // if($user->phone != $request->phone)
             // 更新用户数据
             $user->update($attributes);
         }
