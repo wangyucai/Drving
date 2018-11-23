@@ -54,7 +54,7 @@ class AuthorizationsController extends Controller
             }
             // 创建用户
             $user = User::create([
-                'username' => $request->phone,
+                'phone' => $request->phone,
                 'weapp_openid' => $data['openid'],
                 'weixin_session_key' => $data['session_key'],
             ]);
