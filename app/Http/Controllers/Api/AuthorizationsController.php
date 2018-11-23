@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Transformers\UserTransformer;
+
 use App\Http\Requests\Api\AuthorizationRequest;
 use App\Http\Requests\Api\WeappAuthorizationRequest;
 
@@ -64,8 +66,14 @@ class AuthorizationsController extends Controller
         }
         // 为对应用户创建 JWT
         $token = Auth::guard('api')->fromUser($user);
-
-        return $this->respondWithToken($token)->setStatusCode(201);
+        return $this->response->item($user, new UserTransformer())
+            ->setMeta([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'expires_in' => \Auth::guard('api')->factory()->getTTL() * 60
+            ])
+            ->setStatusCode(201);
+        // return $this->respondWithToken($token)->setStatusCode(201);
     }
     // 刷新token
     protected function respondWithToken($token)
