@@ -15,15 +15,19 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username')->comment('用户名');
-            $table->string('email')->nullable()->unique()->comment('邮箱');
-            $table->string('password')->comment('密码');
-            $table->string('personal_name')->comment('个人名称');
-            $table->string('drive_school_name')->comment('驾校名称');
+            $table->string('phone')->unique()->comment('手机号');
+            $table->string('carno')->nullable()->unique()->comment('身份证号');
+            $table->string('name')->comment('姓名');
+            $table->enum('type', ['trainer', 'student'])->comment('会员类型');
+            $table->unsignedInteger('f_uid')->nullable()->comment('所属教练');
+            $table->string('car_number')->nullable()->comment('车牌号码');
             $table->string('registration_site')->comment('报名地点');
             $table->string('trainingground_site')->comment('训练场地点');
-            $table->string('class_introduction')->comment('班别介绍');
-            $table->rememberToken();
+            $table->string('weapp_openid')->nullable()->unique()->comment('openid');
+            $table->string('weixin_session_key')->nullable()->comment('key');
+            $table->string('all_time')->nullable()->comment('教练全部时间段');
+            $table->unsignedInteger('single_time')->nullable()->comment('教练单个时间段');
+            $table->unsignedInteger('day_times')->nullable()->comment('次数');
             $table->timestamps();
         });
     }
