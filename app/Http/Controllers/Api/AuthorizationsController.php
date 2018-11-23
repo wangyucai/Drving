@@ -31,7 +31,6 @@ class AuthorizationsController extends Controller
     public function weappStore(WeappAuthorizationRequest $request)
     {
         $code = $request->code;
-        $userInfo = $request->userInfo;
         // 根据 code 获取微信 openid 和 session_key
         $miniProgram = \EasyWeChat::miniProgram();
         $data = $miniProgram->auth->session($code);
@@ -53,8 +52,8 @@ class AuthorizationsController extends Controller
             }
             // 创建用户
             $user = User::create([
-                'username' => $userInfo->nickName,
-                'avatar' => $request->avatarUrl,
+                'username' => $request->username,
+                'avatar' => $request->avatar,
                 'phone' => $request->phone,
                 'weapp_openid' => $data['openid'],
                 'weixin_session_key' => $data['session_key'],
