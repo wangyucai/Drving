@@ -18,6 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique()->comment('手机号');
             $table->string('carno')->nullable()->unique()->comment('身份证号');
             $table->string('name')->nullable()->comment('姓名');
+            $table->string('username')->nullable()->comment('用户名');
+            $table->string('avatar')->nullable()->comment('头像');
+             $table->string('introduction')->nullable()->comment('个人简介');
+            $table->integer('if_check')->unsigned()->default(0)->comment('教练是否审核');
             $table->enum('type', ['student', 'trainer'])->comment('会员类型');
             $table->unsignedInteger('f_uid')->nullable()->comment('所属教练');
             $table->string('car_number')->nullable()->comment('教练车牌号码');

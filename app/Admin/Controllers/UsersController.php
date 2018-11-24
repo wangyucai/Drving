@@ -4,12 +4,11 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Image;
 use Encore\Admin\Controllers\HasResourceActions;
-use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Form;
 use Encore\Admin\Layout\Content;
-use Illuminate\Http\Request;
+use Encore\Admin\Show;
 
 class UsersController extends Controller
 {
@@ -24,77 +23,67 @@ class UsersController extends Controller
     public function member(Content $content)
     {
         return $content
-            ->header('会员列表')
+            ->header('学员列表')
             ->body($this->grid('member'));
     }
-
-    public function edit($id, Content $content)
+    public function showtrainer($id, Content $content)
     {
         return $content
-            ->header('编辑教练')
-            ->body($this->form(true)->edit($id));
+            ->header('查看教练')
+            ->body($this->detail($id));
     }
-
-    public function create(Content $content)
+    public function showmember($id, Content $content)
     {
         return $content
-            ->header('创建教练')
-            ->body($this->form(false));
+            ->header('查看学员')
+            ->body($this->detail($id));
     }
-
+    protected function detail($id)
+    {
+        $show = new Show(User::findOrFail($id));
+        $show->id('Id');
+        $show->name('姓名');
+        $show->phone('手机号');
+        $show->carno('身份证号');
+        return $show;
+    }
     protected function grid($member)
     {
         // Laravel-Admin 1.5.19 之后的新写法，原写法也仍然可用
         $grid = new Grid(new User);
-        if($member=='trainer'){
+        if ($member == 'trainer') {
             $grid->model()->where('type', '=', 'trainer');
         }else{
-            // 禁用创建按钮
-            $grid->disableCreateButton();
-            $grid->disableActions();
+            $grid->model()->where('type', '=', 'student');
         }
         $grid->id('ID')->sortable();
-        $grid->username('用户名');
-        $grid->personal_name('个人名称');
-        $grid->email('邮箱');
-        $grid->type('会员类型')->display(function ($value) {
-            return $value=='student' ? '学员' : '教练';
-        });
-        $grid->drive_school_name('驾校名称');
-        $grid->registration_site('报名地点');
-        $grid->trainingground_site('训练场地点');
-        $grid->class_introduction('班别介绍');
-        $grid->actions(function ($actions) {
-            // 不展示 Laravel-Admin 默认的查看按钮
-            $actions->disableView();
-        });
-        $grid->disableExport();
-
-        return $grid;
-    }
-
-    protected function form($isEditing = false)
-    {
-        // Laravel-Admin 1.5.19 之后的新写法，原写法也仍然可用
-        $form = new Form(new User);
-        $form_image = new Form(new Image);
-
-        $form->text('username', '用户名')->rules('required');
-        if(!$isEditing){
-            $form->text('password', '密码')->rules('required');
-            $form->saving(function (Form $form) {
-                if ($form->password && $form->model()->password != $form->password) {
-                    $form->password = bcrypt($form->password);
+        $grid->name('姓名');
+        $grid->phone('手机号');
+        if($member == 'trainer'){
+            $grid->if_check('是否认证')->display(function ($value) {
+                if ($value == 1) {
+                    return $value = '未认证';
+                } elseif ($value == 2) {
+                    return $value = '已认证';
+                } elseif ($value == 3) {
+                    return $value = '认证失败';
                 }
             });
+        }else{
+            $grid->if_uid('是否录入')->display(function ($value) {
+                    return $value ? '已录入':'未录入';
+            });
         }
-        $form->text('personal_name', '个人名称')->rules('required');
-        $form->text('email', '邮箱')->rules('required');
-        $form->text('drive_school_name', '驾校名称')->rules('required');
-        $form->text('registration_site', '报名地点')->rules('required');
-        $form->text('trainingground_site', '训练场地')->rules('required');
-        $form->text('class_introduction', '班别介绍')->rules('required');
 
-        return $form;
+        $grid->carno('身份证');
+
+        $grid->disableExport();
+        // 禁用创建按钮
+        $grid->disableCreateButton();
+        $grid->actions(function ($actions) {
+            $actions->disableDelete();
+            $actions->disableEdit();
+        });
+        return $grid;
     }
 }
