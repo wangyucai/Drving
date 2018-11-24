@@ -13,7 +13,6 @@ class WeappAuthorizationRequest extends FormRequest
     {
         return [
             'code' => 'required|string',
-            'phone' => 'required|string',
         ];
     }
 }
