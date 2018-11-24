@@ -37,6 +37,8 @@ class UserTransformer extends TransformerAbstract
             'all_time' => $user->all_time,
             'single_time' => $user->single_time,
             'day_times' => $user->day_times,
+            'introduction' => $user->introduction,
+            'if_check' => $user->if_check,
             'created_at' => $user->created_at->toDateTimeString(),
             'updated_at' => $user->updated_at->toDateTimeString(),
         ];

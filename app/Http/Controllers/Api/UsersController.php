@@ -110,12 +110,22 @@ class UsersController extends Controller
             ])
             ->setStatusCode(201);
     }
-
+    // 教练入驻及更新
     public function update(UserRequest $request)
     {
         $user = $this->user();
-
-        $attributes = $request->only(['username', 'email', 'personal_name', 'drive_school_name', 'registration_site', 'trainingground_site', 'class_introduction']);
+        $attributes = $request->only(['phone', 'carno', 'name', 'car_number', 'registration_site', 'trainingground_site', 'introduction','if_check','type']);
+        //判断身份证是否绑定其他用户
+        $carno = User::where('id','!=',$user->id)->where('carno',$request->carno)->first();
+        if($carno){
+            return $this->response->errorForbidden('身份证已绑定其他用户，请换身份证');
+        }
+        // 添加/更新头像资源
+        if ($request->avatar_image_id) {
+            $image = Image::find($request->avatar_image_id);
+            $attributes['avatar'] = $image->path;
+        }
+        // 教练车辆照片上传（2-5张）
 
         $user->update($attributes);
 

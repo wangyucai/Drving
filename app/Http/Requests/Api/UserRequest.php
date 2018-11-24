@@ -16,28 +16,19 @@ class UserRequest extends FormRequest
         switch($this->method()) {
             case 'POST':
                 return [
-                    'username' => 'required|between:3,25|regex:/^[A-Za-z0-9\-\_]+$/|unique:users,username',
-                    'password' => 'required|string|min:6',
-                    'email' => 'email',
-                    'personal_name' => 'required',
-                    'drive_school_name' => 'required',
-                    'registration_site' => 'required',
-                    'trainingground_site' => 'required',
-                    'class_introduction' => 'required',
-                    'captcha_key' => 'required|string',
-                    'captcha_code' => 'required|string',
+                    'phone' => 'required|unique:users,phone',
                 ];
                 break;
             case 'PATCH':
                 $userId = \Auth::guard('api')->id();
                 return [
-                    'username' => 'required|between:3,25|regex:/^[A-Za-z0-9\-\_]+$/|unique:users,username',
-                    'email' => 'email',
-                    'personal_name' => 'required',
-                    'drive_school_name' => 'required',
+                    'phone' => 'required',
+                    'carno' => 'required',
+                    'name' => 'required',
+                    'car_number' => 'required',
                     'registration_site' => 'required',
                     'trainingground_site' => 'required',
-                    'class_introduction' => 'required',
+                    'introduction' => 'required',
                 ];
                 break;
         }
@@ -57,10 +48,7 @@ class UserRequest extends FormRequest
     public function messages()
     {
         return [
-            'username.unique' => '用户名已被占用，请重新填写',
-            'username.regex' => '用户名只支持英文、数字、横杆和下划线。',
-            'username.between' => '用户名必须介于 3 - 25 个字符之间。',
-            'username.required' => '用户名不能为空。',
+            'carno.unique' => '身份证已被占用，请重新填写',
         ];
     }
 }
