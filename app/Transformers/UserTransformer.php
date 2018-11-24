@@ -39,8 +39,6 @@ class UserTransformer extends TransformerAbstract
             'day_times' => $user->day_times,
             'introduction' => $user->introduction,
             'if_check' => $user->if_check,
-            'created_at' => $user->created_at->toDateTimeString(),
-            'updated_at' => $user->updated_at->toDateTimeString(),
         ];
     }
 }

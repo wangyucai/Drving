@@ -19,7 +19,7 @@ class UserRequest extends FormRequest
                     'phone' => 'required|unique:users,phone',
                 ];
                 break;
-            case 'PATCH':
+            case 'PUT':
                 $userId = \Auth::guard('api')->id();
                 return [
                     'phone' => 'required',

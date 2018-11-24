@@ -53,10 +53,10 @@ $api->version('v1', [
             $api->post('images', 'ImagesController@store')
                 ->name('api.images.store');
             // 编辑登录用户信息
-            $api->patch('user', 'UsersController@update')
+            $api->put('user', 'UsersController@update')
                 ->name('api.user.update');
             // 教练设置自己的时刻表
-            $api->patch('user/schedule', 'UsersController@schedule')
+            $api->put('user/schedule', 'UsersController@schedule')
                 ->name('api.user.schedule');
             // 支付宝提现
             $api->post('cashes', 'WithdrawCashController@alipayToTransfer')
