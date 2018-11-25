@@ -15,7 +15,7 @@ class ImageRequest extends FormRequest
     {
 
         $rules = [
-            'type' => 'required|string|in:avatar,topic',
+            'type' => 'required|string|in:avatar,other',
         ];
 
         if ($this->type == 'avatar') {
