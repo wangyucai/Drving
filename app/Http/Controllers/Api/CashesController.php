@@ -54,16 +54,23 @@ class CashesController extends Controller
         $user = $this->user();
         $attributes = $request->only(['type']);
         // 添加/更新微信二维码
-        if ($request->wx_image_id) {
+        if ($request->wx_image_id && $request->type==2) {
             $image = Image::find($request->wx_image_id);
             $attributes['wechat_code'] = $image->path;
         }
-        if ($request->name) {
+        if ($request->name && $request->type==1) {
             $attributes['name'] = $request->name;
             $attributes['identity'] = $request->identity;
         }
         $cashs = Cash::where('user_id',$user->id)->where('type',$request->type)->first();
-        $cashs->update($attributes);
+        if($cashs){
+            $cashs->update($attributes);
+        }else{
+            $cash->fill($attributes);
+            $cash->user_id = $this->user()->id;
+            $cash->save();
+            $cashs = $cash;
+        }
         return $this->response->item($cashs, new CashTransformer());
     }
 }
