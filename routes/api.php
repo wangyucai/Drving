@@ -76,6 +76,9 @@ $api->version('v1', [
             // 我的教练信息
             $api->get('mytrainer', 'UsersController@myTrainer')
                 ->name('api.mytrainer.myTrainer');
+            // 获取提现账号
+            $api->get('card_cash', 'CashesController@index')
+                ->name('api.card_cash.index');
             // 绑定卡号提现
             $api->post('card_cash', 'CashesController@store')
                 ->name('api.card_cash.store');
