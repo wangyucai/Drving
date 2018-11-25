@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
              $table->string('introduction')->nullable()->comment('个人简介');
             $table->integer('if_check')->unsigned()->default(0)->comment('教练是否审核');
             $table->enum('type', ['student', 'trainer'])->comment('会员类型');
+            $table->unsignedInteger('subject')->default(1)->comment('学员科目');
             $table->unsignedInteger('f_uid')->nullable()->comment('所属教练');
             $table->string('car_number')->nullable()->comment('教练车牌号码');
             $table->string('registration_site')->nullable()->comment('学员报名地点');
