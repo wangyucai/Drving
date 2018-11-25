@@ -189,9 +189,11 @@ class UsersController extends Controller
     public function toStudent(Request $request)
     {
         $user = $this->user();
-        $students = json_encode('students');
+        $students = json_encode($request->students);
         foreach ($students as $k => $v) {
-            User::where('id',$k)->update(['subject' => $v]);
+            foreach ($v as $key => $value) {
+                User::where('id',$key)->update(['subject' => $value]);
+            }
         }
         return $this->response->array([
             'code' => '0',
