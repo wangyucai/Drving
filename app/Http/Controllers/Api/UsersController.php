@@ -114,12 +114,13 @@ class UsersController extends Controller
     public function update(UserRequest $request)
     {
         $user = $this->user();
-        $attributes = $request->only(['phone', 'carno', 'name', 'car_number', 'registration_site', 'trainingground_site', 'introduction','if_check','type']);
+        $attributes = $request->only(['phone', 'name', 'car_number', 'registration_site', 'trainingground_site', 'introduction','if_check','type']);
         //判断身份证是否绑定其他用户
         $carno = User::where('id','!=',$user->id)->where('carno',$request->carno)->first();
         if($carno){
             return $this->response->errorForbidden('身份证已绑定其他用户，请换身份证');
         }
+        $attributes['carno'] = $request->carno;
         // 添加/更新头像资源
         if ($request->avatar_image_id) {
             $image = Image::find($request->avatar_image_id);
@@ -137,10 +138,81 @@ class UsersController extends Controller
         $user = $this->user();
 
         $attributes = $request->only(['all_time', 'single_time', 'day_times']);
-
         $user->update($attributes);
-        dd($user);
         return $this->response->item($user, new UserTransformer());
+    }
+
+    // 教练录入学员
+    public function student(Request $request)
+    {
+        $user = $this->user();
+        // 判断录入的学员是否注册或者是否已被录入
+        $user_student = User::where('phone', $request->phone)->first();
+        // 不能录入自己的手机号
+        if($user_student && $user_student->phone ==$user->phone){
+            return $this->response->errorForbidden('不能录入自己手机号');
+        }
+        // 判断手机号是否已被录入
+        if($user_student && $user_student->carno){
+            return $this->response->errorForbidden('该手机号已被录入');
+        }
+        if($user_student){
+            //判断身份证是否绑定其他用户
+            $carno = User::where('carno',$request->carno)->first();
+            if($carno){
+                return $this->response->errorForbidden('身份证已绑定其他用户，请换身份证');
+            }
+        }else{
+            return $this->response->errorForbidden('该学员手机号还未注册小程序');
+        }
+        $attributes = $request->only(['name','carno','registration_site']);
+        $attributes['f_uid'] = $user->id;
+        $user_student->update($attributes);
+        return $this->response->item($user_student, new UserTransformer());
+    }
+    // 教练获取自己的学员列表
+    public function studentList(Request  $request,User $user)
+    {
+        // 登录教练信息
+        $user_f = $this->user();
+        // 登录教练录入的学员
+        $query = $user->query();
+        // 是否传学员科目
+        if($subject = $request->subject){
+            $query->where('subject', $subject);
+        }
+        $user = $query->where('f_uid',$user_f->id)->get();
+        return $this->response->collection($user, new UserTransformer());
+    }
+
+    // 教练移动学员列表
+    public function toStudent(Request $request)
+    {
+        $user = $this->user();
+        $students = json_encode('students');
+        foreach ($students as $k => $v) {
+            User::where('id',$k)->update(['subject' => $v]);
+        }
+        return $this->response->array([
+            'code' => '0',
+            'msg' => '移动成功',
+        ]);
+    }
+
+    // 我的教练信息
+    public function myTrainer(Request $request)
+    {
+        $user = $this->user();
+        $myTrainer = User::query()->where('id',$user->f_uid)->get();
+        return $this->response->collection($myTrainer, new UserTransformer());
+    }
+
+    // 所有已认证教练列表
+    public function allTrainers(Request $request)
+    {
+        $user = $this->user();
+        $alltrainers = User::query()->where('if_check',2)->where('type','trainer')->get();
+        return $this->response->collection($alltrainers, new UserTransformer());
     }
 }
 

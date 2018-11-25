@@ -31,6 +31,8 @@ class UserTransformer extends TransformerAbstract
             'carno' => $user->carno,
             'name' => $user->name,
             'type' => $user->type,
+            'f_uid' => $user->f_uid,
+            'subject' => $user->subject,
             'car_number' => $user->car_number,
             'registration_site' => $user->registration_site,
             'trainingground_site' => $user->trainingground_site,
