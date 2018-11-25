@@ -36,6 +36,7 @@ class UserTransformer extends TransformerAbstract
             'car_number' => $user->car_number,
             'registration_site' => $user->registration_site,
             'trainingground_site' => $user->trainingground_site,
+            'car_photo' => $user->car_photo,
             'all_time' => $user->all_time,
             'single_time' => $user->single_time,
             'day_times' => $user->day_times,

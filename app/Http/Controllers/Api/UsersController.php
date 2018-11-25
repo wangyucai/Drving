@@ -127,7 +127,15 @@ class UsersController extends Controller
             $attributes['avatar'] = $image->path;
         }
         // 教练车辆照片上传（2-5张）
-
+        if ($request->space_image_id) {
+            $space_image_id = explode(',',$request->space_image_id);
+            $images = Image::whereIn('id',$space_image_id)->get();
+            foreach ($images as $k => $v) {
+                $space[]=$v->path;
+            }
+            $car_photo = implode(',',$space);
+            $attributes['car_photo'] = $car_photo;
+        }
         $user->update($attributes);
 
         return $this->response->item($user, new UserTransformer());
