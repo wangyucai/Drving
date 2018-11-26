@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\User;
+use App\Models\Image;
 use App\Models\Schedule;
 use League\Fractal\TransformerAbstract;
 
@@ -23,6 +24,14 @@ class UserTransformer extends TransformerAbstract
             $single_time = Schedule::where('id',$user->single_time)->first();
             $user->single_time = $single_time->time;
         }
+        if($user->car_photo){
+            $space_image_id = explode(',',$user->car_photo);
+            $images = Image::whereIn('path',$space_image_id)->get();
+            foreach ($images as $k => $v) {
+                $space[]=$v->id;
+            }
+            $car_photo_id = implode(',',$space);
+        }
         return [
             'id' => $user->id,
             'username' => $user->username,
@@ -37,6 +46,7 @@ class UserTransformer extends TransformerAbstract
             'registration_site' => $user->registration_site,
             'trainingground_site' => $user->trainingground_site,
             'car_photo' => $user->car_photo,
+            'car_photo_id' => $car_photo_id?$car_photo_id:'',
             'all_time' => $user->all_time,
             'single_time' => $user->single_time,
             'day_times' => $user->day_times,
