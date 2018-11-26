@@ -38,6 +38,8 @@ class MyCashesController extends Controller
         ];
         $mycash->fill($data);
         $mycash->save();
+        // 提现的同时扣除我的积分（后台审核不通过则退回）
+
         return $this->response->item($mycash, new MyCashTransformer())
             ->setStatusCode(201);
     }
