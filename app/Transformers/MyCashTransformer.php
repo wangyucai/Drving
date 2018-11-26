@@ -13,10 +13,13 @@ class MyCashTransformer extends TransformerAbstract
             'id' => $mycash->id,
             'userInfo' => $mycash->user,
             'points' => $mycash->points,
+            'type' => $mycash->cash->type,
             'name' => $mycash->cash->name,
             'identity' => $mycash->cash->identity,
             'wechat_code' => $mycash->cash->wechat_code,
             'if_check' => $mycash->if_check,
+            'created_at' => $mycash->created_at->toDateTimeString(),
+            'check_time' => $mycash->check_time?$mycash->check_time->toDateTimeString():'',
         ];
     }
 }

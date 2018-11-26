@@ -53,6 +53,8 @@ class UserTransformer extends TransformerAbstract
             'introduction' => $user->introduction,
             'if_check' => $user->if_check,
             'car_photo' => $user->car_photo,
+            'my_points' => $user->my_points,
+            'pid' => $user->pid,
         ];
     }
 }

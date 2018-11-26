@@ -19,6 +19,7 @@ class CreateMyCashesTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->string('points')->nullable();
             $table->integer('if_check')->unsigned()->default(0)->comment('提现是否被审核');
+            $table->dateTime('check_time')->nullable()->comment('审核时间');
             $table->timestamps();
         });
     }
