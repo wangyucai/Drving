@@ -114,7 +114,10 @@ class UsersController extends Controller
     public function update(UserRequest $request)
     {
         $user = $this->user();
-        $attributes = $request->only(['phone', 'name', 'car_number', 'registration_site', 'trainingground_site', 'introduction','if_check','type']);
+        $attributes = $request->only(['phone', 'name', 'car_number', 'registration_site', 'trainingground_site', 'introduction','type']);
+        if($request->if_check){
+            $attributes['if_check'] = $request->if_check;
+        }
         //判断身份证是否绑定其他用户
         $carno = User::where('id','!=',$user->id)->where('carno',$request->carno)->first();
         if($carno){
