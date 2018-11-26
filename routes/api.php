@@ -85,6 +85,12 @@ $api->version('v1', [
             // 修改提现账号
             $api->put('card_cash', 'CashesController@update')
                 ->name('api.card_cash.update');
+            // 我的提现流水
+            $api->get('my_cash', 'MyCashesController@index')
+                ->name('api.card_cash.index');
+            // 我的提现申请
+            $api->post('my_cash', 'MyCashesController@store')
+                ->name('api.card_cash.store');
         });
     });
 });
