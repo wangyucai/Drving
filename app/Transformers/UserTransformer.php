@@ -42,6 +42,7 @@ class UserTransformer extends TransformerAbstract
             'day_times' => $user->day_times,
             'introduction' => $user->introduction,
             'if_check' => $user->if_check,
+            'car_photo' => $user->car_photo,
         ];
     }
 }
