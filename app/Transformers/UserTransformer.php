@@ -31,6 +31,8 @@ class UserTransformer extends TransformerAbstract
                 $space[]=$v->id;
             }
             $car_photo_id = implode(',',$space);
+        }else{
+            $car_photo_id='';
         }
         return [
             'id' => $user->id,
@@ -46,7 +48,7 @@ class UserTransformer extends TransformerAbstract
             'registration_site' => $user->registration_site,
             'trainingground_site' => $user->trainingground_site,
             'car_photo' => $user->car_photo,
-            'car_photo_id' => $car_photo_id?$car_photo_id:'',
+            'car_photo_id' => $car_photo_id,
             'all_time' => $user->all_time,
             'single_time' => $user->single_time,
             'day_times' => $user->day_times,
