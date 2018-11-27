@@ -58,6 +58,7 @@ class UsersController extends Controller
     public function showmember($id,MyCash $mycash)
     {
         $user = User::find($id);
+        // dd($user);
         $mycashes =  $mycash->where('user_id',$id)->get();
         $cashes =  Cash::where('user_id',$id)->get();
         return Admin::content(function (Content $content) use ($user,$mycashes,$cashes) {

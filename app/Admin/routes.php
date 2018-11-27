@@ -33,4 +33,14 @@ Route::group([
     $router->get('mycashes', 'MyCashesController@index')->name('admin.mycashes.index');
     $router->get('mycashes/{id}', 'MyCashesController@show')->name('admin.mycashes.show');
     $router->post('mycashes/check', 'MyCashesController@check')->name('admin.trainer.check');
+
+    // 佣金设置管理
+    $router->get('commissions', 'CommissionsController@index');
+    $router->get('commissions/create', 'CommissionsController@create');
+    $router->get('commissions/{id}', 'CommissionsController@show');
+    $router->get('commissions/{id}/edit', 'CommissionsController@edit');
+    $router->post('commissions', 'CommissionsController@store');
+    $router->put('commissions/{id}', 'CommissionsController@update');
+    $router->delete('commissions/{id}', 'CommissionsController@destroy');
+
 });

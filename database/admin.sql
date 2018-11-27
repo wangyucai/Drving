@@ -21,7 +21,7 @@
 
 LOCK TABLES `admin_menu` WRITE;
 /*!40000 ALTER TABLE `admin_menu` DISABLE KEYS */;
-INSERT INTO `admin_menu` VALUES (1,0,1,'首页','fa-bar-chart','/',NULL,'2018-11-15 15:14:18'),(2,0,6,'系统管理','fa-tasks',NULL,NULL,'2018-11-24 11:23:32'),(3,2,7,'管理员','fa-users','auth/users',NULL,'2018-11-24 11:23:32'),(4,2,8,'角色','fa-user','auth/roles',NULL,'2018-11-24 11:23:32'),(5,2,9,'权限','fa-ban','auth/permissions',NULL,'2018-11-24 11:23:32'),(6,2,10,'菜单','fa-bars','auth/menu',NULL,'2018-11-24 11:23:32'),(7,2,11,'操作日志','fa-history','auth/logs',NULL,'2018-11-24 11:23:32'),(8,0,2,'用户管理','fa-users','/users','2018-11-15 15:41:50','2018-11-15 16:29:25'),(9,0,5,'时刻表管理','fa-calendar','/schedules','2018-11-16 10:53:44','2018-11-24 11:23:32'),(10,8,3,'教练管理','fa-car','/users/trainer','2018-11-16 11:44:24','2018-11-24 11:23:32'),(11,8,4,'学员管理','fa-male','/users/member','2018-11-16 11:51:52','2018-11-24 11:23:32');
+INSERT INTO `admin_menu` VALUES (1,0,1,'首页','fa-bar-chart','/',NULL,'2018-11-15 15:14:18'),(2,0,8,'系统管理','fa-tasks',NULL,NULL,'2018-11-27 21:32:25'),(3,2,9,'管理员','fa-users','auth/users',NULL,'2018-11-27 21:32:25'),(4,2,10,'角色','fa-user','auth/roles',NULL,'2018-11-27 21:32:25'),(5,2,11,'权限','fa-ban','auth/permissions',NULL,'2018-11-27 21:32:25'),(6,2,12,'菜单','fa-bars','auth/menu',NULL,'2018-11-27 21:32:25'),(7,2,13,'操作日志','fa-history','auth/logs',NULL,'2018-11-27 21:32:25'),(8,0,2,'用户管理','fa-users','/users','2018-11-15 15:41:50','2018-11-15 16:29:25'),(9,0,7,'时刻表管理','fa-calendar','/schedules','2018-11-16 10:53:44','2018-11-27 21:32:25'),(10,8,3,'教练管理','fa-car','/users/trainer','2018-11-16 11:44:24','2018-11-24 11:23:32'),(11,8,4,'学员管理','fa-male','/users/member','2018-11-16 11:51:52','2018-11-24 11:23:32'),(12,0,5,'积分提现管理','fa-dollar','/mycashes','2018-11-27 19:03:36','2018-11-27 19:03:48'),(13,0,6,'佣金设置管理','fa-wrench','/commissions','2018-11-27 21:32:12','2018-11-27 21:32:25');
 /*!40000 ALTER TABLE `admin_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,4 +103,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-24  4:08:55
+-- Dump completed on 2018-11-27 13:48:34

@@ -28,12 +28,14 @@
         <th>录入状态：</th>
         <td>{{ $user->if_uid?'已录入':'未录入' }}</td>
       </tr>
+      @if($user->if_uid)
       <tr>
         <th>我的科目：</th>
         <td>{{ \App\Models\User::$subjectStatusMap[$user->subject] }}</td>
         <th>我的教练手机号：</th>
         <td>{{ $user->parent->phone }}</td>
       </tr>
+      @endif
       <tr>
         <th>报名地点：</th>
         <td>{{ $user->registration_site }}</td>
