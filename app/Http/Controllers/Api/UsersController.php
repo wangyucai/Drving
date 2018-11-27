@@ -227,5 +227,12 @@ class UsersController extends Controller
         $alltrainers = User::query()->where('if_check',2)->where('type','trainer')->get();
         return $this->response->collection($alltrainers, new UserTransformer());
     }
+
+    // 我的教练信息
+    public function trainer(Request $request)
+    {
+        $trainer = User::query()->where('id',$request->id)->get();
+        return $this->response->collection($trainer, new UserTransformer());
+    }
 }
 

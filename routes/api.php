@@ -47,6 +47,9 @@ $api->version('v1', [
             // 所有已认证教练列表
             $api->get('alltrainers', 'UsersController@allTrainers')
                 ->name('api.alltrainers.allTrainers');
+            // 获取教练的详情
+            $api->get('trainer', 'UsersController@trainer')
+                ->name('api.user.trainer');
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {
             // 当前登录用户信息
@@ -61,6 +64,12 @@ $api->version('v1', [
             // 教练设置自己的时刻表
             $api->put('user/schedule', 'UsersController@schedule')
                 ->name('api.user.schedule');
+            // 教练查看自己的时刻表
+            $api->get('trainer/times', 'TrainerTimesController@index')
+                ->name('api.trainer.index');
+            // 教练设置自己的时刻表-->新的接口
+            $api->put('trainer/times', 'TrainerTimesController@update')
+                ->name('api.trainer.times');
             // 支付宝提现
             $api->post('cashes', 'WithdrawCashController@alipayToTransfer')
                 ->name('api.cashes.alipayToTransfer');
@@ -91,6 +100,9 @@ $api->version('v1', [
             // 我的提现申请
             $api->post('my_cash', 'MyCashesController@store')
                 ->name('api.card_cash.store');
+            // 学员约车
+            $api->post('student/appointments', 'AppointmentsController@store')
+                ->name('api.student.appointments');
         });
     });
 });
