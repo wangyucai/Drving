@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\MyCash;
 use Illuminate\Console\Command;
 use EasyWeChat\Factory;
+use Carbon\Carbon;
 
 class RefundPoints extends Command
 {
@@ -28,9 +29,9 @@ class RefundPoints extends Command
             $user->my_points = $user->my_points + $myCash->points;
             $user->save();
             $myCash->if_check = 3;
+            $myCash->check_time = Carbon::now();
             $myCash->save();
+            $this->info("用户id: {$user->id} 成功退还 {$myCash->points} 积分");
         }
-        return $this->info('成功');
-
     }
 }

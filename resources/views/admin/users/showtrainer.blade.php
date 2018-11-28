@@ -95,6 +95,8 @@
                   提现成功
                 @elseif($item->if_check==2)
                   提现失败
+                @elseif($item->if_check==3)
+                  已退还
                 @endif
         </th>
       </tr>
