@@ -74,6 +74,8 @@ class MyCashesController extends Controller
                 return $value = "<a class='btn btn-xs btn-success'>已提现</a>";
             } elseif ($value == 2) {
                 return $value = "<a class='btn btn-xs btn-danger'>已拒绝</a>";
+            } elseif ($value == 3) {
+                return $value = "<a class='btn btn-xs btn-danger'>已退还</a>";
             }
         });
         $grid->points('提现积分');

@@ -98,7 +98,7 @@ class AuthorizationsController extends Controller
     }
 
     // 小程序码
-    protected function weappToken(Request $request)
+    protected function weappCode(Request $request)
     {
         $miniProgram = \EasyWeChat::miniProgram();
         $response = $miniProgram->app_code->getUnlimit($request->uid, [
@@ -108,6 +108,7 @@ class AuthorizationsController extends Controller
             $filename = $response->saveAs(app()->storagePath('/app/public'), 'appcode.png');
             $url = Storage::url($filename);
             return $this->response->array([
+                'code' => 0,
                 'url' => asset($url)
             ])->setStatusCode(201);
         }

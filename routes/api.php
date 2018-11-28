@@ -33,9 +33,9 @@ $api->version('v1', [
         // 删除token
         $api->delete('authorizations/current', 'AuthorizationsController@destroy')
             ->name('api.authorizations.destroy');
-        // 获取小程序的token
-        $api->post('authorizations/weapp', 'AuthorizationsController@weappToken')
-            ->name('api.authorizations.weappToken');
+        // 获取小程序码
+        $api->post('authorizations/weapp', 'AuthorizationsController@weappCode')
+            ->name('api.authorizations.weappCode');
     });
 
     $api->group([
