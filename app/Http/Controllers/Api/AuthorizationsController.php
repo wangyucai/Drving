@@ -6,9 +6,9 @@ use Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Transformers\UserTransformer;
-
 use App\Http\Requests\Api\AuthorizationRequest;
 use App\Http\Requests\Api\WeappAuthorizationRequest;
+use Illuminate\Support\Facades\Storage;
 
 class AuthorizationsController extends Controller
 {
@@ -95,5 +95,22 @@ class AuthorizationsController extends Controller
     {
         Auth::guard('api')->logout();
         return $this->response->noContent();
+    }
+
+    // 小程序码
+    protected function weappToken(Request $request)
+    {
+        $miniProgram = \EasyWeChat::miniProgram();
+        $response = $miniProgram->app_code->getUnlimit($request->uid, [
+            'path' => $request->path,
+        ]);
+        if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
+            $filename = $response->saveAs(app()->storagePath('/app/public'), 'appcode.png');
+            $url = Storage::url($filename);
+            return $this->response->array([
+                'url' => asset($url)
+            ])->setStatusCode(201);
+        }
+        return $this->response->errorForbidden('获取失败');
     }
 }
