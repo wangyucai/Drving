@@ -87,7 +87,7 @@ class MyCashesController extends Controller
             $actions->disableEdit();
             $actions->append(new CheckCash($actions->getKey()));
             $user = User::find($actions->row->user_id);
-            if($user->type == 'trainer'){
+            if($user && $user->type == 'trainer'){
                 $rounte = 'admin.trainer.show';
             }else{
                 $rounte = 'admin.member.show';
