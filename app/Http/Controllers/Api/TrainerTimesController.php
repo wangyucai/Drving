@@ -20,6 +20,9 @@ class TrainerTimesController extends Controller
     public function update(Request $request, TrainerTime $trainerTime)
     {
         $user = $this->user();
+        if($user->if_check != 2){
+            return $this->response->errorForbidden('该用户还不是认证教练,不能设置时刻表');
+        }
         // 调用接口之前先删除原来关于此教练的时间段
         TrainerTime::where('user_id',$user->id)->delete();
         // 添加或更新操作

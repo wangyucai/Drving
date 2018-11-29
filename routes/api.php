@@ -73,6 +73,9 @@ $api->version('v1', [
             // 教练设置自己的时刻表-->新的接口
             $api->put('trainer/times', 'TrainerTimesController@update')
                 ->name('api.trainer.times');
+            // 教练设置自己的学员佣金
+            $api->put('trainer/commissions', 'UsersController@commissions')
+                ->name('api.trainer.commissions');
             // 支付宝提现
             $api->post('cashes', 'WithdrawCashController@alipayToTransfer')
                 ->name('api.cashes.alipayToTransfer');

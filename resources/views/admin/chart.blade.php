@@ -1,6 +1,6 @@
 <canvas id="myChart" width="200" height="80"></canvas>
 <script>
-$(function () {
+$.get('get_chart_data',function (data, status) {
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'pie',
@@ -8,7 +8,9 @@ $(function () {
             labels: ["已认证教练", "未认证教练", "已录入学员", "未录入学员", "总教练", "总学员"],
             datasets: [{
                 label: '# 数量',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [
+                    data.checked_trainer, data.checking_trainer, data.checked_student, data.checking_student, data.all_trainer, data.all_student
+                ],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',

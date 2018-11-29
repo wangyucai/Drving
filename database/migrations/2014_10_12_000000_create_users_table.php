@@ -24,7 +24,6 @@ class CreateUsersTable extends Migration
             $table->integer('if_check')->unsigned()->default(0)->comment('教练是否审核');
             $table->enum('type', ['student', 'trainer'])->comment('会员类型');
             $table->unsignedInteger('my_points')->default(0)->comment('我的积分');
-            $table->unsignedInteger('pid')->default(0)->comment('我的上级');
             $table->unsignedInteger('subject')->default(1)->comment('学员科目');
             $table->unsignedInteger('f_uid')->nullable()->comment('所属教练');
             $table->string('car_number')->nullable()->comment('教练车牌号码');
@@ -36,6 +35,14 @@ class CreateUsersTable extends Migration
             $table->string('all_time')->nullable()->comment('教练全部时间段');
             $table->unsignedInteger('single_time')->nullable()->comment('教练单个时间段');
             $table->unsignedInteger('day_times')->nullable()->comment('次数');
+            $table->unsignedInteger('parent_id')->nullable()->comment('我的上级');
+            $table->foreign('parent_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedInteger('level')->comment('当前分销的层级');
+            $table->string('path')->comment('该分销所有父级分销 id');
+            $table->boolean('is_get_cash')->default(false)->comment('所有上级是否拿到佣金,教练无限极，学员三级');
+            $table->decimal('one_level')->default(0.00)->comment('一级佣金');
+            $table->decimal('two_level')->default(0.00)->comment('二级佣金');
+            $table->decimal('three_level')->default(0.00)->comment('三级佣金');
             $table->timestamps();
         });
     }

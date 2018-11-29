@@ -32,19 +32,20 @@ class AuthorizationsController extends Controller
     // 小程序登录
     public function weappStore(WeappAuthorizationRequest $request)
     {
-        $code = $request->code;
-        // 根据 code 获取微信 openid 和 session_key
-        $miniProgram = \EasyWeChat::miniProgram();
-        $data = $miniProgram->auth->session($code);
-        // 如果结果错误，说明 code 已过期或不正确，返回 401 错误
-        if (isset($data['errcode'])) {
-            return $this->response->errorUnauthorized('code 不正确');
-        }
+        // $code = $request->code;
+        // // 根据 code 获取微信 openid 和 session_key
+        // $miniProgram = \EasyWeChat::miniProgram();
+        // $data = $miniProgram->auth->session($code);
+        // // 如果结果错误，说明 code 已过期或不正确，返回 401 错误
+        // if (isset($data['errcode'])) {
+        //     return $this->response->errorUnauthorized('code 不正确');
+        // }
+        $data['openid'] = 8;
         // 找到 openid 对应的用户
         $user = User::where('weapp_openid', $data['openid'])->first();
 
-        $attributes['weixin_session_key'] = $data['session_key'];
-        $attributes['openid'] = $data['openid'];
+        $attributes['weixin_session_key'] = $data['session_key']=8;
+        $attributes['openid'] = $data['openid']=9;
 
         // 未找到对应用户则需要进行用户手机号与微信信息绑定
         if (!$user) {
@@ -52,14 +53,18 @@ class AuthorizationsController extends Controller
             if (!$request->phone) {
                 return $this->response->errorForbidden('请输入手机号后登陆');
             }
-            // 创建用户
-            $user = User::create([
+            $userInfo = [
                 'username' => $request->username,
                 'avatar' => $request->avatar,
                 'phone' => $request->phone,
                 'weapp_openid' => $data['openid'],
                 'weixin_session_key' => $data['session_key'],
-            ]);
+            ];
+            if ($request->parent_id) {
+                $userInfo['parent_id']=$request->parent_id;
+            }
+            // 创建用户
+            $user = User::create($userInfo);
         }else{
             // 更新用户数据
             $user->update($attributes);

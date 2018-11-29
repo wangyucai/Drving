@@ -11,6 +11,7 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index');
+    $router->get('get_chart_data', 'HomeController@getData');
     // 教练管理
     $router->get('users/trainer', 'UsersController@index')->name('admin.trainer.index');
     $router->get('users/trainer/{id}', 'UsersController@showtrainer')->name('admin.trainer.show');

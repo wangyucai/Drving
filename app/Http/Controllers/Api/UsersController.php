@@ -147,7 +147,9 @@ class UsersController extends Controller
     public function schedule(Request $request)
     {
         $user = $this->user();
-
+        if($user->if_check != 2){
+            return $this->response->errorForbidden('该用户还不是认证教练,不能设置时刻表');
+        }
         $attributes = $request->only(['all_time', 'single_time', 'day_times']);
         $user->update($attributes);
         return $this->response->item($user, new UserTransformer());
@@ -157,6 +159,9 @@ class UsersController extends Controller
     public function student(Request $request)
     {
         $user = $this->user();
+        if($user->if_check != 2){
+            return $this->response->errorForbidden('该用户还不是认证教练,不能录入学员');
+        }
         // 判断录入的学员是否注册或者是否已被录入
         $user_student = User::where('phone', $request->phone)->first();
         // 不能录入自己的手机号
@@ -200,6 +205,9 @@ class UsersController extends Controller
     public function toStudent(Request $request)
     {
         $user = $this->user();
+        if($user->if_check != 2){
+            return $this->response->errorForbidden('该用户还不是认证教练,不能移动学员');
+        }
         $students = json_decode($request->students,true);
         foreach ($students as $k => $v) {
             foreach ($v as $key => $value) {
@@ -234,5 +242,25 @@ class UsersController extends Controller
         $trainer = User::query()->where('id',$request->id)->get();
         return $this->response->collection($trainer, new UserTransformer());
     }
+
+    // 教练设置自己的学员佣金
+    public function commissions(Request $request)
+    {
+        // 判断用户是否是认证教练
+        $user = $this->user();
+        if($user->if_check != 2){
+            return $this->response->errorForbidden('该用户还不是认证教练,不能设置佣金');
+        }
+        User::where('id',$user->id)->update([
+            'one_level' => $request->one_level,
+            'two_level' => $request->two_level,
+            'three_level' => $request->three_level,
+        ]);
+        return $this->response->array([
+            'code' => '0',
+            'msg' => '佣金设置成功',
+        ]);
+    }
+
 }
 

@@ -77,9 +77,24 @@ class UsersController extends Controller
             'user_id' => '用户ID',
             'if_check'      => '审核状态',
         ]);
-        $user->where('id',$request->user_id)->update([
-            'if_check' => $request->if_check,
-        ]);
+        if($request->if_check==2){
+            $user->where('id',$request->user_id)->update([
+                'if_check' => $request->if_check,
+            ]);
+        }else{
+            // 清空教练入驻的信息-->变成学员
+            $user->where('id',$request->user_id)->update([
+                'if_check' => $request->if_check,
+                'name' => '',
+                'car_number' => '',
+                'registration_site' => '',
+                'trainingground_site' => '',
+                'car_photo' => '',
+                'introduction' => '',
+                'type' => 'student',
+            ]);
+        }
+
         $msg = $request->if_check==2?'认证成功':'认证失败';
         // 返回上一页
         return response()->json(
