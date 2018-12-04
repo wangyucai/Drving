@@ -36,6 +36,11 @@ class AppointmentsController extends Controller
         // 添加操作
         foreach ($appointment_infos as $k => $v) {
             foreach ($v as $key => $value) {
+                // 判断该学员当天该时间段预约是否重复
+                $my = $appointment->where('id',$user->id)->where('trainer_id',$trainer_id)->where('schedule_id',$value)->whereBetween('yy_times',[strtotime($s_time), strtotime($e_time)])->count();
+                if($my>0){
+                    return $this->response->errorForbidden('今天该教练该时间段'.$timess.'你已经预约过了,请勿重复预约');
+                }
                 // 判断该教练的改时间段是否预约次数已满
                 $times = $appointment->where('trainer_id',$trainer_id)->where('schedule_id',$value)->whereBetween('yy_times',[strtotime($s_time), strtotime($e_time)])->count();
                 // 该时间段教练的可预约次数
