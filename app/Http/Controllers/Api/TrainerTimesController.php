@@ -28,13 +28,11 @@ class TrainerTimesController extends Controller
         // 添加或更新操作
         $time_infos = json_decode($request->time_infos,true);
         foreach ($time_infos as $k => $v) {
-            foreach ($v as $key => $value) {
-                TrainerTime::create([
-                    'schedule_id' => $key,
-                    'school_car_number' => $value,
+            TrainerTime::create([
+                    'schedule_id' => $v['schedule_id'],
+                    'school_car_number' => $v['school_car_number'],
                     'user_id' => $user->id,
                 ]);
-            }
         }
         $attributes['day_times'] = $request->day_times;
         $user->update($attributes);
