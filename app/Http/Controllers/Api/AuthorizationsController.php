@@ -109,11 +109,12 @@ class AuthorizationsController extends Controller
             'path' => $request->path,
         ]);
         if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
-            $filename = $response->saveAs(app()->storagePath('/app/public'), 'appcode.png');
-            $url = Storage::url($filename);
+            $filename = $response->saveAs(public_path() . '/uploads/code/', 'code_'.$request->uid.'.png');
+            $url = config('app.url'). "/uploads/code/code_".$request->uid.'.png';
+            // $url = Storage::url($filename);
             return $this->response->array([
                 'code' => 0,
-                'url' => asset($url)
+                'url' => $url
             ])->setStatusCode(201);
         }
         return $this->response->errorForbidden('获取失败');
