@@ -51,6 +51,11 @@ class AuthorizationsController extends Controller
             // 如果未提交手机号，403 错误提示
             if (!$request->phone) {
                 return $this->response->errorForbidden('请输入手机号后登陆');
+            }else{
+                $f_phone = User::where('phone', $request->phone)->first();
+                if($f_phone){
+                    return $this->response->errorForbidden('您输入的手机号已被注册');
+                }
             }
             $userInfo = [
                 'username' => $request->username,
