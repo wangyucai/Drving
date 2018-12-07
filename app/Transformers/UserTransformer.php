@@ -45,6 +45,7 @@ class UserTransformer extends TransformerAbstract
             'one_level'=>$user->one_level,
             'two_level'=>$user->two_level,
             'three_level'=>$user->three_level,
+            'wx_code'=>$user->wx_code,
         ];
     }
 }
