@@ -116,7 +116,9 @@ class AuthorizationsController extends Controller
         if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
             $filename = $response->saveAs(public_path() . '/uploads/code/', 'code_'.$request->uid.'.png');
             $url = config('app.url'). "/uploads/code/code_".$request->uid.'.png';
-            // $url = Storage::url($filename);
+            // 更新到数据库表中
+            $data['wx_code'] = $url;
+            User::where('id',$request->uid)->update($data);
             return $this->response->array([
                 'code' => 0,
                 'url' => $url
