@@ -1,0 +1,186 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "\u9a7e\u6821\u5c0f\u7a0b\u5e8f Api \u6587\u6863",
+        "version": "1.0.0"
+    },
+    "host": "driving.test",
+    "basePath": "/api",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/alltrainers": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "\u83b7\u53d6\u6240\u6709\u5df2\u8ba4\u8bc1\u6559\u7ec3\u5217\u8868",
+                "description": "\u8fd4\u56de\u6240\u6709\u5df2\u8ba4\u8bc1\u6559\u7ec3\u5217\u8868\u3002",
+                "responses": {
+                    "200": {
+                        "description": "\u6240\u6709\u5df2\u8ba4\u8bc1\u6559\u7ec3\u5217\u8868",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "description": "\u7528\u6237ID",
+                                        "type": "integer"
+                                    },
+                                    "avatar": {
+                                        "description": "\u5934\u50cf",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "\u624b\u673a\u53f7",
+                                        "type": "string"
+                                    },
+                                    "carno": {
+                                        "description": "\u8eab\u4efd\u8bc1\u53f7",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "description": "\u4f1a\u5458\u7c7b\u578b",
+                                        "type": "string"
+                                    },
+                                    "f_uid": {
+                                        "description": "\u6240\u5c5e\u6559\u7ec3",
+                                        "type": "unsignedInteger"
+                                    },
+                                    "subject": {
+                                        "description": "\u5b66\u5458\u79d1\u76ee",
+                                        "type": "unsignedInteger"
+                                    },
+                                    "car_number": {
+                                        "description": "\u6559\u7ec3\u8f66\u724c\u53f7\u7801",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mytrainer": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "\u83b7\u53d6\u6211\u7684\u8bc1\u6559\u7ec3\u4fe1\u606f",
+                "description": "\u8fd4\u56de\u6211\u7684\u8bc1\u6559\u7ec3\u4fe1\u606f\u3002",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "\u7528\u6237\u51ed\u8bc1",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u6211\u7684\u8bc1\u6559\u7ec3\u4fe1\u606f",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "description": "\u7528\u6237ID",
+                                        "type": "integer"
+                                    },
+                                    "avatar": {
+                                        "description": "\u5934\u50cf",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "\u624b\u673a\u53f7",
+                                        "type": "string"
+                                    },
+                                    "carno": {
+                                        "description": "\u8eab\u4efd\u8bc1\u53f7",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "description": "\u4f1a\u5458\u7c7b\u578b",
+                                        "type": "string"
+                                    },
+                                    "f_uid": {
+                                        "description": "\u6240\u5c5e\u6559\u7ec3",
+                                        "type": "unsignedInteger"
+                                    },
+                                    "subject": {
+                                        "description": "\u5b66\u5458\u79d1\u76ee",
+                                        "type": "unsignedInteger"
+                                    },
+                                    "car_number": {
+                                        "description": "\u6559\u7ec3\u8f66\u724c\u53f7\u7801",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/persons": {
+            "post": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Creates a person",
+                "description": "Adds a new person to the persons list.",
+                "parameters": [
+                    {
+                        "name": "person",
+                        "in": "body",
+                        "description": "The person to create.",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "username"
+                            ],
+                            "properties": {
+                                "firstName": {
+                                    "type": "string"
+                                },
+                                "lastName": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persons succesfully created."
+                    },
+                    "400": {
+                        "description": "Persons couldn't have been created."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {},
+    "tags": [
+        {
+            "name": "Login",
+            "description": "\u767b\u5f55\u6a21\u5757"
+        },
+        {
+            "name": "Trainers",
+            "description": "\u6559\u7ec3\u6a21\u5757"
+        },
+        {
+            "name": "Students",
+            "description": "\u5b66\u5458\u6a21\u5757"
+        }
+    ]
+}

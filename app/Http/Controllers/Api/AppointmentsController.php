@@ -30,12 +30,14 @@ class AppointmentsController extends Controller
         $kyy_times = $day_times-$appointmented_time;
         // 预约后剩下的次数
         $sx_times = $kyy_times-$appointment_time;
+
         if($sx_times<0){
-            return $this->response->errorForbidden('该教练当天可预约还剩'.$kyy_times.'次');
+            return $this->response->errorForbidden('该教练当天可预约次数已用完');
         }
         // 添加操作
         foreach ($appointment_infos as $k => $v) {
             foreach ($v as $key => $value) {
+                $timess = Schedule::where('id',$value)->value('time');
                 // 判断该学员当天该时间段预约是否重复
                 $my = $appointment->where('id',$user->id)->where('trainer_id',$trainer_id)->where('schedule_id',$value)->whereBetween('yy_times',[strtotime($s_time), strtotime($e_time)])->count();
                 if($my>0){
@@ -45,7 +47,6 @@ class AppointmentsController extends Controller
                 $times = $appointment->where('trainer_id',$trainer_id)->where('schedule_id',$value)->whereBetween('yy_times',[strtotime($s_time), strtotime($e_time)])->count();
                 // 该时间段教练的可预约次数
                 $trainer_time = TrainerTime::where('user_id',$trainer_id)->where('schedule_id',$value)->value('school_car_number');
-                $timess = Schedule::where('id',$value)->value('time');
                 if($times>=$trainer_time){
                     return $this->response->errorForbidden('该教练该时间段'.$timess.'可预约次数已满');
                 }

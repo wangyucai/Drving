@@ -227,7 +227,6 @@ class UsersController extends Controller
         $myTrainer = User::query()->where('id',$user->f_uid)->get();
         return $this->response->collection($myTrainer, new UserTransformer());
     }
-
     // 所有已认证教练列表
     public function allTrainers(Request $request)
     {

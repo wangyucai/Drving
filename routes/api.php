@@ -36,6 +36,9 @@ $api->version('v1', [
         // 获取小程序码
         $api->post('authorizations/weapp', 'AuthorizationsController@weappCode')
             ->name('api.authorizations.weappCode');
+        // 会员续费
+        $api->post('weapp/renewals', 'WxPayController@wxPay')
+            ->name('api.wxpay.renewals');
     });
 
     $api->group([
@@ -53,6 +56,9 @@ $api->version('v1', [
             // 获取教练的详情
             $api->get('trainer', 'UsersController@trainer')
                 ->name('api.user.trainer');
+            // 获取续费设置列表
+            $api->get('renewals', 'RenewalsController@index')
+                    ->name('api.renewals.index');
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {
             // 当前登录用户信息

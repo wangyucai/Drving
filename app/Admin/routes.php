@@ -44,4 +44,13 @@ Route::group([
     $router->put('commissions/{id}', 'CommissionsController@update');
     $router->delete('commissions/{id}', 'CommissionsController@destroy');
 
+    // 续费设置管理
+    $router->get('renewals', 'RenewalsController@index');
+    $router->get('renewals/create', 'RenewalsController@create');
+    $router->get('renewals/{id}', 'RenewalsController@show');
+    $router->get('renewals/{id}/edit', 'RenewalsController@edit');
+    $router->post('renewals', 'RenewalsController@store');
+    $router->put('renewals/{id}', 'RenewalsController@update');
+    $router->delete('renewals/{id}', 'RenewalsController@destroy');
+
 });
