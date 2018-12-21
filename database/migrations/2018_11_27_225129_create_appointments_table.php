@@ -19,6 +19,7 @@ class CreateAppointmentsTable extends Migration
             $table->integer('trainer_id')->unsigned()->index()->comment('预约的教练id');
             $table->integer('schedule_id')->unsigned()->index()->comment('学车时间段ID');
             $table->integer('yy_times')->unsigned()->comment('预约时间');
+            $table->integer('if_send')->unsigned()->default(0)->comment('预约成功是否发送成功');
             $table->timestamps();
         });
     }

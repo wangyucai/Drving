@@ -115,6 +115,9 @@ $api->version('v1', [
             // 学员约车
             $api->post('student/appointments', 'AppointmentsController@store')
                 ->name('api.student.appointments');
+            // 学员约车成功后发送模板消息
+            $api->post('user/send_msg', 'UsersController@send')
+                ->name('api.user.send');
         });
     });
 });

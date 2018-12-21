@@ -261,5 +261,33 @@ class UsersController extends Controller
         ]);
     }
 
+    // 小程序发送模板消息--学员预约车
+    public function send(Request $request)
+    {
+        try {
+            $user = $this->user();
+            $app = \EasyWeChat::miniProgram();
+            // 获取所有模板列表、
+            $send = $app->template_message->send([
+                'touser' => $user->weapp_openid,
+                'template_id' => 'gusdAUJyBv9Q3uPXGr77GvJT7ts9r5Xf6sS_MEJYLAg',
+                'page' => $request->page,
+                'form_id' => $request->form_id,
+                'data' => [
+                    'keyword1' => $user->weapp_openid,//'司家伟',
+                    'keyword2' => $user->phone,//'18351978376',
+                    'keyword3' => $request->keyword3,//'2018-12-20 22:00',
+                    'keyword4' => $request->keyword4,//'科目一',
+                ],
+            ]);
+            return $this->response->array([
+                'code' => 0,
+                'msg' => '预约成功'
+            ])->setStatusCode(201);
+        } catch (\Exception $e) {
+            return $this->response->errorForbidden('获取失败');
+        }
+    }
+
 }
 
