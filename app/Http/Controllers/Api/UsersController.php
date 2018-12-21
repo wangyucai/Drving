@@ -266,10 +266,11 @@ class UsersController extends Controller
     {
         try {
             $user = $this->user();
+            $weapp_openid = User::where('id',$request->f_uid)->value('weapp_openid');
             $app = \EasyWeChat::miniProgram();
             // 获取所有模板列表、
             $send = $app->template_message->send([
-                'touser' => $user->weapp_openid,
+                'touser' => $weapp_openid,
                 'template_id' => 'gusdAUJyBv9Q3uPXGr77GvJT7ts9r5Xf6sS_MEJYLAg',
                 'page' => $request->page,
                 'form_id' => $request->form_id,
