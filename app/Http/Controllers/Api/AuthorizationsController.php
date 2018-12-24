@@ -9,6 +9,8 @@ use App\Transformers\UserTransformer;
 use App\Http\Requests\Api\AuthorizationRequest;
 use App\Http\Requests\Api\WeappAuthorizationRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Handlers\WXBizDataCryptHandler;
+use Leto\MiniProgramAES\WXBizDataCrypt;
 
 class AuthorizationsController extends Controller
 {
@@ -46,6 +48,28 @@ class AuthorizationsController extends Controller
         $attributes['weixin_session_key'] = $data['session_key'];
         $attributes['openid'] = $data['openid'];
 
+        // 验签
+        // $rawData = $request->rawData;
+        // if ($signature != sha1($rawData. $data['session_key'])) {
+        //     return ['code' => -1, 'msg' => '验签失败'];
+        // }
+        // 实例化解密类
+        // $pc = new WXBizDataCrypt('wxb2a57179be03f441', $data['session_key']);
+        // // 解密用户信息
+        // $encryptedData=$request->encryptedData;
+        // $iv = $request->iv;
+        // // 解密
+        // $errCode = $pc->decryptData($encryptedData, $iv, $reData);
+        // // 判断解密是否成功
+        // if ($errCode == 0) {
+        //     return [
+        //         'code' => 0,
+        //         'msg' => 'ok',
+        //         'data' => json_decode($reData, true)
+        //     ];
+        // }else{
+        //     return ['code' => -2, 'msg' => '解密失败'];
+        // }
         // 未找到对应用户则需要进行用户手机号与微信信息绑定
         if (!$user) {
             // 如果未提交手机号，403 错误提示

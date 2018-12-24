@@ -17,7 +17,6 @@ class CreateTrainerTimesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->integer('schedule_id')->unsigned()->index()->comment('学车时间段ID');
-            $table->integer('school_car_number')->unsigned()->default(0)->comment('可预约的学员人数');
             $table->timestamps();
         });
     }
