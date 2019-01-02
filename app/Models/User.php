@@ -44,7 +44,10 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $fillable = [
-        'username','avatar','phone', 'carno', 'name', 'type', 'car_number', 'registration_site', 'trainingground_site','weapp_openid', 'weixin_session_key','all_time','single_time','day_times','f_uid','introduction','if_check','car_photo','is_get_cash', 'level', 'path','parent_id'
+        'username','avatar','phone', 'carno', 'name', 'type', 'car_number', 'registration_site', 'trainingground_site','weapp_openid', 'weixin_session_key','all_time','single_time','day_times','f_uid','introduction','if_check','car_photo','is_get_cash', 'level', 'path','parent_id','member_time'
+    ];
+    protected $dates = [
+        'member_time',
     ];
 
     protected $casts = [

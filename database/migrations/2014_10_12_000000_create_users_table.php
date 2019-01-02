@@ -43,6 +43,7 @@ class CreateUsersTable extends Migration
             $table->decimal('one_level')->default(0.00)->comment('一级佣金');
             $table->decimal('two_level')->default(0.00)->comment('二级佣金');
             $table->decimal('three_level')->default(0.00)->comment('三级佣金');
+            $table->dateTime('member_time')->nullable()->comment('会员到期时间');
             $table->timestamps();
         });
     }
