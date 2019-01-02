@@ -85,6 +85,9 @@ $api->version('v1', [
             // 支付宝提现
             $api->post('cashes', 'WithdrawCashController@alipayToTransfer')
                 ->name('api.cashes.alipayToTransfer');
+            // 小程序提现
+            $api->post('wx_cashes', 'WithdrawCashController@wxToTransfer')
+                ->name('api.cashes.wxToTransfer');
             // 教练录入学员
             $api->put('user/student', 'UsersController@student')
                 ->name('api.student.update');
@@ -120,4 +123,7 @@ $api->version('v1', [
                 ->name('api.user.send');
         });
     });
+    // 微信支付回调通知
+    $api->post('notify', 'WxPayController@notify')
+            ->name('api.wxpay.notify');
 });
