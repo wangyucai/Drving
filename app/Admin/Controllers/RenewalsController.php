@@ -48,7 +48,7 @@ class RenewalsController extends Controller
         $grid = new Grid(new Renewal);
 
         $grid->id('Id');
-        $grid->days('续费天数');
+        $grid->days('续费月数');
         $grid->money('续费金额');
         $grid->disableExport();
 
@@ -60,7 +60,7 @@ class RenewalsController extends Controller
         $show = new Show(Renewal::findOrFail($id));
 
         $show->id('Id');
-        $show->days('续费天数');
+        $show->days('续费月数');
         $show->money('续费金额');
 
         return $show;
@@ -69,7 +69,7 @@ class RenewalsController extends Controller
     protected function form()
     {
         $form = new Form(new Renewal);
-        $form->text('days', '续费天数')->rules('required');
+        $form->text('days', '续费月数')->rules('required');
         $form->text('money', '续费金额')->rules('required');
 
         return $form;

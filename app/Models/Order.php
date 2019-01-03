@@ -12,6 +12,7 @@ class Order extends Model
         'total_amount',
         'paid_at',
         'pay_status',
+        'days',
     ];
     protected $dates = [
         'paid_at',

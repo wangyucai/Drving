@@ -20,7 +20,8 @@ class CreateOrdersTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->decimal('total_amount', 10, 2);
             $table->dateTime('paid_at')->nullable();
-             $table->unsignedInteger('pay_status')->default(0)->comment('支付状态');
+            $table->unsignedInteger('days');
+            $table->unsignedInteger('pay_status')->default(0)->comment('支付状态');
             $table->timestamps();
         });
     }

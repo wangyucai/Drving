@@ -6,6 +6,9 @@ $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
     'middleware' => 'serializer:array'
 ], function ($api) {
+    // 微信支付回调通知
+    $api->post('notify', 'WxPayController@notify')
+            ->name('api.wxpay.notify');
     // 增加调用频率限制 一分钟一次
     $api->group([
         'middleware' => 'api.throttle',
@@ -36,9 +39,6 @@ $api->version('v1', [
         // 获取小程序码
         $api->post('authorizations/weapp', 'AuthorizationsController@weappCode')
             ->name('api.authorizations.weappCode');
-        // 会员续费
-        $api->post('weapp/renewals', 'WxPayController@wxPay')
-            ->name('api.wxpay.renewals');
     });
 
     $api->group([
@@ -121,9 +121,9 @@ $api->version('v1', [
             // 学员约车成功后发送模板消息
             $api->post('user/send_msg', 'UsersController@send')
                 ->name('api.user.send');
+             // 教练续费
+            $api->post('weapp/renewals', 'WxPayController@wxPay')
+                ->name('api.wxpay.renewals');
         });
     });
-    // 微信支付回调通知
-    $api->post('notify', 'WxPayController@notify')
-            ->name('api.wxpay.notify');
 });

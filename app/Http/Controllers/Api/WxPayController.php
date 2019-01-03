@@ -11,13 +11,14 @@ class WxPayController extends Controller
 {
     public function wxPay(Request $request, Order $order)
     {
+        $user = $this->user();
 
         if(!$request->has('days') || !$request->has('money')){
             return $this->response->errorForbidden('缺少参数days或money');
         }
         $days = $request->days; // 续费天数
         $money = $request->money; // 续费金额
-        $user_id = $request->user_id; // 续费金额
+        $user_id = $user->id; // 续费金额
 
         $weapp_openid = User::where('id',$user_id)->value('weapp_openid');
         if(!$weapp_openid){
@@ -45,11 +46,12 @@ class WxPayController extends Controller
             $params['paySign'] = generate_sign($params, config('wechat.payment.default.key'));
             unset($params['appId']);
             // 生成的订单入库
-            \DB::transaction(function () use ($out_trade_no, $user_id,$money,$order) {
+            \DB::transaction(function () use ($out_trade_no, $user_id,$money,$days,$order) {
                 $data = [
                     'no' => $out_trade_no,
                     'user_id' => $user_id,
                     'total_amount' => $money,
+                    'days' => $days,
                 ];
                 $order->fill($data);
                 $order->save();
@@ -79,7 +81,17 @@ class WxPayController extends Controller
                 if (array_get($message, 'result_code') === 'SUCCESS' && $pay_result['trade_state'] =="SUCCESS") {
                     $order->paid_at = time(); // 更新支付时间为当前时间
                     $order->pay_status = 1;
-
+                    // 更新用户表的会员到期时间
+                    $user_id = $order->user_id;
+                    $user = User::where('id', $user_id)->first();
+                    $now = date("Y-m-d H:i:s");
+                    if ($user->member_time && $user->member_time > $now){
+                        $dq_time = strtotime("+".$order->days." months", strtotime($user->member_time));
+                    }else{
+                        $dq_time = strtotime("+".$order->days." months", strtotime($now));
+                    }
+                    $user->member_time =$dq_time;
+                    $user->save();
                 // 用户支付失败
                 } elseif (array_get($message, 'result_code') === 'FAIL') {
                     $order->pay_status = 2;
