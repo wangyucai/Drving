@@ -112,7 +112,7 @@ return [
             'key'                => env('WECHAT_PAYMENT_KEY', 'key-for-signature'),
             'cert_path'          => env('WECHAT_PAYMENT_CERT_PATH', resource_path('cert/apiclient_cert.pem')),
             'key_path'           => env('WECHAT_PAYMENT_KEY_PATH', resource_path('cert/apiclient_key.pem')),
-            'notify_url'         => 'http://example.com/payments/wechat-notify',//告诉微信服务器，订单的状态变化，请通过这个地址来告诉我
+            'notify_url'         => env('WECHAT_PAYMENT_NOTIFY_URL', 'http://example.com/payments/wechat-notify'),//告诉微信服务器，订单的状态变化，请通过这个地址来告诉我
         ],
     ],
 

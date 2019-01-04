@@ -7,7 +7,7 @@ $api->version('v1', [
     'middleware' => 'serializer:array'
 ], function ($api) {
     // 微信支付回调通知
-    $api->post('notify', 'WxPayController@notify')
+    $api->post('notify/wxpay', 'WxPayController@notify')
             ->name('api.wxpay.notify');
     // 增加调用频率限制 一分钟一次
     $api->group([
