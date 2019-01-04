@@ -48,8 +48,13 @@ class WxPay extends Command
             }else{
                 // 十分钟后未支付的修改订单状态为已取消
                 if(date("Y-m-d H:i:s", time() - 10 * 60)>$order->created_at){
-                    $order->pay_status = 2;
-                    $this->info("用户id{$order->user_id} 取消订单{$order->no}");
+                    $s = $payment->order->close($order->no);
+                    if($s['result_code']=='SUCCESS'){
+                        $order->pay_status = 2;
+                        $this->info("用户id{$order->user_id} 取消订单{$order->no}成功");
+                    }else{
+                        $this->warn("用户id{$order->user_id} 取消订单{$order->no}失败");
+                    }
                 }
             }
             $order->save(); // 保存订单
