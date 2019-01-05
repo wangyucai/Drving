@@ -118,10 +118,10 @@ $api->version('v1', [
             // 学员约车
             $api->post('student/appointments', 'AppointmentsController@store')
                 ->name('api.student.appointments');
-            // 学员约车成功后发送模板消息
-            $api->post('user/send_msg', 'UsersController@send')
+            // 用户发送模板消息
+            $api->post('user/send_msg', 'SendMsgsController@send')
                 ->name('api.user.send');
-             // 教练续费
+            // 教练续费
             $api->post('weapp/renewals', 'WxPayController@wxPay')
                 ->name('api.wxpay.renewals');
         });

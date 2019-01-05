@@ -29,6 +29,7 @@ class WithdrawCashController extends Controller
 
     // 微信提现
     public function wxToTransfer(){
+        // dd(1);
         $payment = \EasyWeChat::payment(); // 微信支付
         $a = $payment->transfer->toBalance([
             'partner_trade_no' => '1233455', // 商户订单号，需保持唯一性(只能是字母或者数字，不能包含有符号)
