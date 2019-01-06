@@ -115,6 +115,9 @@ $api->version('v1', [
             // 我的提现申请
             $api->post('my_cash', 'MyCashesController@store')
                 ->name('api.card_cash.store');
+            // 获取我的教练时刻表
+            $api->get('student/schedule', 'SchedulesController@myTrainer')
+                    ->name('api.student.schedule');
             // 学员约车
             $api->post('student/appointments', 'AppointmentsController@store')
                 ->name('api.student.appointments');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Renewal;
 use Illuminate\Http\Request;
 use function EasyWeChat\Kernel\Support\generate_sign;
 
@@ -20,6 +21,11 @@ class WxPayController extends Controller
         $money = $request->money; // 续费金额
         $user_id = $user->id; // 续费金额
 
+        // 判断支付月份和后台设置的金额是否相同
+        // $ht_money = Renewal::where('days',$days)->value('money');
+        // if($ht_money && ($ht_money != $money)){
+        //     return $this->response->errorForbidden('支付的金额和后台设置的不一致');
+        // }
         $weapp_openid = User::where('id',$user_id)->value('weapp_openid');
         if(!$weapp_openid){
             return $this->response->errorForbidden('没有获取到用户的openid,请重新登录');
