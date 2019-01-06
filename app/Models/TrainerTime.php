@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TrainerTime extends Model
 {
-    protected $fillable = ['schedule_id', 'school_car_number', 'user_id'];
+    protected $fillable = ['type','schedule_id', 'school_car_number', 'user_id'];
 
     public function user()
     {

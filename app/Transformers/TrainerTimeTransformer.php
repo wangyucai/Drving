@@ -11,6 +11,7 @@ class TrainerTimeTransformer extends TransformerAbstract
     {
         return [
             'id' => $trainerTime->id,
+            'type' => $trainerTime->type,
             'userInfo' => $trainerTime->user,
             'school_car_time' => $trainerTime->schedule->time,
             'schedule_id' => $trainerTime->schedule_id,

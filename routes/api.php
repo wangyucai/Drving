@@ -120,7 +120,7 @@ $api->version('v1', [
                 ->name('api.student.appointments');
             // 用户发送模板消息
             $api->post('user/send_msg', 'SendMsgsController@send')
-                ->name('api.user.send');
+                ->name('api.user.send');//->middleware('renew');
             // 教练续费
             $api->post('weapp/renewals', 'WxPayController@wxPay')
                 ->name('api.wxpay.renewals');

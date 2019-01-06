@@ -15,8 +15,9 @@ class CreateTrainerTimesTable extends Migration
     {
         Schema::create('trainer_times', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->index();
-            $table->integer('schedule_id')->unsigned()->index()->comment('学车时间段ID');
+            $table->integer('type')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->integer('schedule_id')->unsigned()->comment('学车时间段ID');
             $table->timestamps();
         });
     }
