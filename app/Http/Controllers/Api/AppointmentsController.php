@@ -32,14 +32,14 @@ class AppointmentsController extends Controller
         $sx_times = $kyy_times-$appointment_time;
 
         if($sx_times<0){
-            return $this->response->errorForbidden('该教练当天可预约次数已用完');
+            return $this->response->errorForbidden('您选的次数已超过该教练当天可预约次数');
         }
         // 添加操作
         foreach ($appointment_infos as $k => $v) {
             foreach ($v as $key => $value) {
                 $timess = Schedule::where('id',$value)->value('time');
                 // 判断该学员当天该时间段预约是否重复
-                $my = $appointment->where('id',$user->id)->where('trainer_id',$trainer_id)->where('schedule_id',$value)->whereBetween('yy_times',[strtotime($s_time), strtotime($e_time)])->count();
+                $my = $appointment->where('user_id',$user->id)->where('trainer_id',$trainer_id)->where('schedule_id',$value)->whereBetween('yy_times',[strtotime($s_time), strtotime($e_time)])->count();
                 if($my>0){
                     return $this->response->errorForbidden('今天该教练该时间段'.$timess.'你已经预约过了,请勿重复预约');
                 }
