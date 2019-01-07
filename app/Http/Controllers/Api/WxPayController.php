@@ -13,7 +13,9 @@ class WxPayController extends Controller
     public function wxPay(Request $request, Order $order)
     {
         $user = $this->user();
-
+        if($user->if_check != 2){
+            return $this->response->errorForbidden('您还不是已认证教练,不能充值');
+        }
         if(!$request->has('days') || !$request->has('money')){
             return $this->response->errorForbidden('缺少参数days或money');
         }

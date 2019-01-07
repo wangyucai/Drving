@@ -7,9 +7,32 @@ use App\Models\TrainerTime;
 use App\Models\User;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use App\Transformers\AppointmentTransformer;
 
 class AppointmentsController extends Controller
 {
+    // 查询学员预约的接口
+    public function index(Request $request, Appointment $appointment)
+    {
+        // 教练查询
+        $user = $this->user();
+        if(!$request->has('q_date')){
+            return $this->response->errorForbidden('缺少参数查询日期');
+        }
+        $s_date = strtotime($request->q_date);
+        $e_date = $s_date + 86400-1;
+
+        if($user->type == 'student'){
+            $query = $appointment->where('user_id',$user->id);
+        }else{
+            if($user->if_check != 2){
+                return $this->response->errorForbidden('您还不是认证教练,不能查看学员预约情况');
+            }
+            $query = $appointment->where('trainer_id',$user->id);
+        }
+        $yy = $query->whereBetween('yy_times', [$s_date, $e_date])->get();
+        return $this->response->collection($yy, new AppointmentTransformer());
+    }
     // 预约时刻表
     public function store(Request $request, Appointment $appointment)
     {
@@ -54,7 +77,7 @@ class AppointmentsController extends Controller
                     'user_id' => $user->id,
                     'trainer_id' => $trainer_id,
                     'schedule_id' => $value,
-                    'yy_times' => time(),
+                    'yy_times' => time()+86400, // 加一天的时间戳
                 ]);
             }
         }

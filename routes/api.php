@@ -127,6 +127,9 @@ $api->version('v1', [
             // 教练续费
             $api->post('weapp/renewals', 'WxPayController@wxPay')
                 ->name('api.wxpay.renewals');
+            // 查询预约情况
+            $api->get('student/appointments', 'AppointmentsController@index')
+                    ->name('api.appointments.list');
         });
     });
 });

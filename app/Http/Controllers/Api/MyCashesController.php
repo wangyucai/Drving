@@ -13,12 +13,14 @@ class MyCashesController extends Controller
     // 获取我的提现流水
     public function index(Request $request, MyCash $mycash)
     {
+        $user = $this->user();
+
         $query = $mycash->query();
         // 是否传入审核字段
         if($request->has('if_check')){
             $query->where('if_check', $request->if_check);
         }
-        $mycashes = $query->get();
+        $mycashes = $query->where('user_id',$user->id)->get();
         return $this->response->collection($mycashes, new MyCashTransformer());
     }
     // 我的提现申请
