@@ -25,10 +25,6 @@ class UserRequest extends FormRequest
                     'phone' => 'required',
                     'carno' => 'required',
                     'name' => 'required',
-                    'car_number' => 'required',
-                    'registration_site' => 'required',
-                    'trainingground_site' => 'required',
-                    'introduction' => 'required',
                 ];
                 break;
         }
