@@ -48,28 +48,6 @@ class AuthorizationsController extends Controller
         $attributes['weixin_session_key'] = $data['session_key'];
         $attributes['openid'] = $data['openid'];
 
-        // 验签
-        // $rawData = $request->rawData;
-        // if ($signature != sha1($rawData. $data['session_key'])) {
-        //     return ['code' => -1, 'msg' => '验签失败'];
-        // }
-        // 实例化解密类
-        // $pc = new WXBizDataCrypt('wxb2a57179be03f441', $data['session_key']);
-        // // 解密用户信息
-        // $encryptedData=$request->encryptedData;
-        // $iv = $request->iv;
-        // // 解密
-        // $errCode = $pc->decryptData($encryptedData, $iv, $reData);
-        // // 判断解密是否成功
-        // if ($errCode == 0) {
-        //     return [
-        //         'code' => 0,
-        //         'msg' => 'ok',
-        //         'data' => json_decode($reData, true)
-        //     ];
-        // }else{
-        //     return ['code' => -2, 'msg' => '解密失败'];
-        // }
         // 未找到对应用户则需要进行用户手机号与微信信息绑定
         if (!$user) {
             // 如果未提交手机号，403 错误提示
@@ -94,6 +72,16 @@ class AuthorizationsController extends Controller
             // 创建用户
             $user = User::create($userInfo);
         }else{
+            // 学员端分享自己教练名片给新用户或者 已注册并且是没有绑定教练并且没有绑定分享者的用户
+            if($user->type=='student' && is_null($user->f_uid) && is_null($user->parent_id)){
+                if ($request->parent_id ) {
+                    $attributes['parent_id']=$request->parent_id;
+                    // 将层级设为父级的层级 + 1
+                    $attributes['level'] = $user->cash_parent->level + 1;
+                    // 将 path 值设为父的 path 追加父 ID 以及最后跟上一个 - 分隔符
+                    $attributes['path'] = $user->cash_parent->path . $request->parent_id . '-';
+                }
+            }
             // 更新用户数据
             $user->update($attributes);
         }

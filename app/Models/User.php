@@ -61,7 +61,7 @@ class User extends Authenticatable implements JWTSubject
         static::creating(function (User $user) {
             // 如果创建的是一个根用户
             if (is_null($user->parent_id)) {
-                // 将层级设为 0
+                // 将层级设为 1
                 $user->level = 0;
                 // 将 path 设为 -
                 $user->path  = '-';

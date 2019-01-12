@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Transformers\UserTransformer;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\Image;
+use function EasyWeChat\Kernel\Support\generate_sign;
+use App\Models\Order;
 
 class UsersController extends Controller
 {
@@ -156,7 +158,7 @@ class UsersController extends Controller
     }
 
     // 教练录入学员
-    public function student(Request $request)
+    public function student(Request $request, Order $order)
     {
         $user = $this->user();
         if($user->if_check != 2){
@@ -183,8 +185,73 @@ class UsersController extends Controller
         }
         $attributes = $request->only(['name','carno','registration_site']);
         $attributes['f_uid'] = $user->id;
-        $user_student->update($attributes);
-        return $this->response->item($user_student, new UserTransformer());
+        // 录入前教练要支付佣金
+        //  先判断被录入的学员的 所有父级分销id的数量
+        $p_student = $user_student->path_ids;
+        $p_student_total = count($p_student);
+        if(!$user->one_level || !$user->two_level || !$user->three_level){
+            return $this->response->errorForbidden('请先设置您的教练佣金后再录入学员！');
+        }
+        if($p_student_total==1){
+            $money = $user->one_level; // 支付的金额
+        }elseif($p_student_total==2){
+            $money = $user->one_level+$user->two_level; // 支付的金额
+        }elseif($p_student_total==3){
+            $money = $user->one_level+$user->two_level+$user->three_level; // 支付的金额
+        }else{ // 根学员 不需要支付
+            // 录入成功
+            $user_student->update($attributes);
+            return $this->response->array([
+                'code' => '0',
+                'msg' => '录入成功',
+            ]);
+        }
+        $user_id = $user->id; // 用户id
+        $student_id = $user_student->id; // 被录入的学员id
+
+        $weapp_openid = User::where('id',$user_id)->value('weapp_openid');
+        if(!$weapp_openid){
+            return $this->response->errorForbidden('没有获取到用户的openid,请重新登录');
+        }
+        $out_trade_no = date('YmdHis') . mt_rand(1000, 9999);
+        $payment = \EasyWeChat::payment(); // 微信支付
+        $result = $payment->order->unify([
+            'body'         => '会员续费',
+            'out_trade_no' => $out_trade_no,
+            'trade_type'   => 'JSAPI',  // 必须为JSAPI
+            'openid'       => $weapp_openid, // 这里的openid为付款人的openid
+            'total_fee'    => $money*100, // 总价 单位是分
+        ]);
+        // 如果成功生成统一下单的订单，那么进行二次签名
+        if ($result['return_code'] === 'SUCCESS') {
+            // 二次签名的参数必须与下面相同
+            $params = [
+                'appId'     => config('wechat.mini_program.default.app_id'),
+                'timeStamp' => time(),
+                'nonceStr'  => $result['nonce_str'],
+                'package'   => 'prepay_id=' . $result['prepay_id'],
+                'signType'  => 'MD5',
+            ];
+            $params['paySign'] = generate_sign($params, config('wechat.payment.default.key'));
+            unset($params['appId']);
+            // 生成的订单入库
+            \DB::transaction(function () use ($out_trade_no, $user_id,$money,$student_id,$order,$attributes) {
+                $data = [
+                    'no' => $out_trade_no,
+                    'user_id' => $user_id,
+                    'student_id' => $student_id,
+                    'total_amount' => $money,
+                    'student_name' => $attributes['name'],
+                    'student_carno' => $attributes['carno'],
+                    'student_registration_site' => $attributes['registration_site']
+                ];
+                $order->fill($data);
+                $order->save();
+            });
+            return $params;
+        } else {
+            return $result;
+        }
     }
     // 教练获取自己的学员列表
     public function studentList(Request  $request,User $user)
