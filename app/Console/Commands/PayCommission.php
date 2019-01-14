@@ -46,7 +46,7 @@ class PayCommission extends Command
                 User::where('id',$p_trainer[0])->increment('my_points', $trainer_coms->one_level);
                 User::where('id',$p_trainer[1])->increment('my_points', $trainer_coms->two_level);
                 // 记录获得积分情况
-                DB::table('send_logs')->insert([
+                \DB::table('send_logs')->insert([
                     ['user_id' => $p_trainer[0], 'points' => $trainer_coms->one_level],
                     ['user_id' => $p_trainer[1], 'points' => $trainer_coms->two_level]
                 ]);
@@ -58,7 +58,7 @@ class PayCommission extends Command
                 User::where('id',$p_trainer[1])->increment('my_points', $trainer_coms->two_level);
                 User::where('id',$p_trainer[2])->increment('my_points', $trainer_coms->three_level);
                 // 记录获得积分情况
-                DB::table('send_logs')->insert([
+                \DB::table('send_logs')->insert([
                     ['user_id' => $p_trainer[0], 'points' => $trainer_coms->one_level],
                     ['user_id' => $p_trainer[1], 'points' => $trainer_coms->two_level],
                     ['user_id' => $p_trainer[2], 'points' => $trainer_coms->three_level],
