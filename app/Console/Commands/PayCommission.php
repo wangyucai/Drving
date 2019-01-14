@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\User;
 use App\Models\SendLog;
 use App\Models\Commission;
+use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Seeder;
@@ -39,7 +40,7 @@ class PayCommission extends Command
             if($p_trainer_total==1){ // 该用户获得一级教练佣金
                 User::where('id',$p_trainer[0])->increment('my_points', $trainer_coms->one_level);
                 // 记录获得积分情况
-                SendLog::create(['user_id'=>$p_trainer[0],'points'=>$trainer_coms->one_level,'add_time'=>Carbon::now()]);
+                SendLog::create(['user_id'=>$p_trainer[0],'points'=>$trainer_coms->one_level,'add_time'=>time()]);
                 $trainer->is_get_cash = true;
                 $trainer->save();
             }elseif($p_trainer_total==2){ // 第一个用户获得一级教练佣金 第二个用户获得二级教练佣金
@@ -47,8 +48,8 @@ class PayCommission extends Command
                 User::where('id',$p_trainer[1])->increment('my_points', $trainer_coms->two_level);
                 // 记录获得积分情况
                 \DB::table('send_logs')->insert([
-                    ['user_id' => $p_trainer[0], 'points' => $trainer_coms->one_level,'add_time'=>Carbon::now()],
-                    ['user_id' => $p_trainer[1], 'points' => $trainer_coms->two_level,'add_time'=>Carbon::now()]
+                    ['user_id' => $p_trainer[0], 'points' => $trainer_coms->one_level,'add_time'=>time()],
+                    ['user_id' => $p_trainer[1], 'points' => $trainer_coms->two_level,'add_time'=>time()]
                 ]);
                 $trainer->is_get_cash = true;
                 $trainer->save();
@@ -58,9 +59,9 @@ class PayCommission extends Command
                 User::where('id',$p_trainer[2])->increment('my_points', $trainer_coms->three_level);
                 // 记录获得积分情况
                 \DB::table('send_logs')->insert([
-                    ['user_id' => $p_trainer[0], 'points' => $trainer_coms->one_level,'add_time'=>Carbon::now()],
-                    ['user_id' => $p_trainer[1], 'points' => $trainer_coms->two_level,'add_time'=>Carbon::now()],
-                    ['user_id' => $p_trainer[2], 'points' => $trainer_coms->three_level,'add_time'=>Carbon::now()],
+                    ['user_id' => $p_trainer[0], 'points' => $trainer_coms->one_level,'add_time'=>time()],
+                    ['user_id' => $p_trainer[1], 'points' => $trainer_coms->two_level,'add_time'=>time()],
+                    ['user_id' => $p_trainer[2], 'points' => $trainer_coms->three_level,'add_time'=>time()],
                 ]);
                 $trainer->is_get_cash = true;
                 $trainer->save();
@@ -81,7 +82,7 @@ class PayCommission extends Command
                     $order = Order::where('user_id',$p_s->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
                     if($order){ // 发放积分
                         User::where('id',$p_student[0])->increment('my_points', $trainer->one_level);
-                        SendLog::create(['user_id'=>$p_student[0],'points'=>$trainer->one_level,'add_time'=>Carbon::now()]);
+                        SendLog::create(['user_id'=>$p_student[0],'points'=>$trainer->one_level,'add_time'=>time()]);
                         $student->is_get_cash = true;
                         $student->save();
                     }else{
@@ -100,7 +101,7 @@ class PayCommission extends Command
                     $order = Order::where('user_id',$p_s->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
                     if($order){ // 发放积分
                         User::where('id',$p_student[0])->increment('my_points', $trainer->one_level);
-                        SendLog::create(['user_id'=>$p_student[0],'points'=>$trainer->one_level,'add_time'=>Carbon::now()]);
+                        SendLog::create(['user_id'=>$p_student[0],'points'=>$trainer->one_level,'add_time'=>time()]);
                         $student->is_get_cash = true;
                         $student->save();
                     }else{
@@ -115,7 +116,7 @@ class PayCommission extends Command
                     $order = Order::where('user_id',$p_ss->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
                     if($order){ // 发放积分
                         User::where('id',$p_student[1])->increment('my_points', $trainer->two_level);
-                        SendLog::create(['user_id'=>$p_student[1],'points'=>$trainer->two_level,'add_time'=>Carbon::now()]);
+                        SendLog::create(['user_id'=>$p_student[1],'points'=>$trainer->two_level,'add_time'=>time()]);
                         $student->is_get_cash = true;
                         $student->save();
                     }else{
@@ -135,7 +136,7 @@ class PayCommission extends Command
                     $order = Order::where('user_id',$p_s->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
                     if($order){ // 发放积分
                         User::where('id',$p_student[0])->increment('my_points', $trainer->one_level);
-                        SendLog::create(['user_id'=>$p_student[0],'points'=>$trainer->one_level,'add_time'=>Carbon::now()]);
+                        SendLog::create(['user_id'=>$p_student[0],'points'=>$trainer->one_level,'add_time'=>time()]);
                         $student->is_get_cash = true;
                         $student->save();
                     }else{
@@ -150,7 +151,7 @@ class PayCommission extends Command
                     $order = Order::where('user_id',$p_ss->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
                     if($order){ // 发放积分
                         User::where('id',$p_student[1])->increment('my_points', $trainer->two_level);
-                        SendLog::create(['user_id'=>$p_student[1],'points'=>$trainer->two_level,'add_time'=>Carbon::now()]);
+                        SendLog::create(['user_id'=>$p_student[1],'points'=>$trainer->two_level,'add_time'=>time()]);
                         $student->is_get_cash = true;
                         $student->save();
                     }else{
@@ -165,7 +166,7 @@ class PayCommission extends Command
                     $order = Order::where('user_id',$p_sss->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
                     if($order){ // 发放积分
                         User::where('id',$p_student[2])->increment('my_points', $trainer->two_level);
-                        SendLog::create(['user_id'=>$p_student[2],'points'=>$trainer->two_level,'add_time'=>Carbon::now()]);
+                        SendLog::create(['user_id'=>$p_student[2],'points'=>$trainer->two_level,'add_time'=>time()]);
                         $student->is_get_cash = true;
                         $student->save();
                     }else{

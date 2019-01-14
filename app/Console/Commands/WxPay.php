@@ -82,6 +82,7 @@ class WxPay extends Command
                     'name' => $order->student_name,
                     'carno' => $order->student_carno,
                     'registration_site' => $order->student_registration_site,
+                    'f_uid' => $order->user_id
                 ];
                 User::where('id', $order->student_id)->update($attributes);
                 $this->info("教练id{$user_id} 成功支付一笔佣金订单 并且录入学员成功");

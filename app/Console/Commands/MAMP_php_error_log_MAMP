@@ -1598,3 +1598,19 @@
 [14-Jan-2019 05:47:13 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0
 [14-Jan-2019 05:47:13 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so' - dlopen(/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so, 9): image not found in Unknown on line 0
 [14-Jan-2019 05:47:13 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0
+[14-Jan-2019 13:12:46 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so' - dlopen(/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so, 9): image not found in Unknown on line 0
+[14-Jan-2019 13:12:46 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0
+[14-Jan-2019 13:12:47 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so' - dlopen(/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so, 9): image not found in Unknown on line 0
+[14-Jan-2019 13:12:47 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0
+[14-Jan-2019 13:12:58 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so' - dlopen(/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so, 9): image not found in Unknown on line 0
+[14-Jan-2019 13:12:58 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0
+[14-Jan-2019 13:12:58 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so' - dlopen(/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so, 9): image not found in Unknown on line 0
+[14-Jan-2019 13:12:58 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0
+[14-Jan-2019 13:13:17 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so' - dlopen(/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so, 9): image not found in Unknown on line 0
+[14-Jan-2019 13:13:17 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0
+[14-Jan-2019 13:13:17 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so' - dlopen(/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so, 9): image not found in Unknown on line 0
+[14-Jan-2019 13:13:17 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0
+[14-Jan-2019 13:17:56 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so' - dlopen(/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so, 9): image not found in Unknown on line 0
+[14-Jan-2019 13:17:56 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0
+[14-Jan-2019 13:17:57 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so' - dlopen(/Applications/MAMP/bin/php/php7.0.8/lib/php/extensions/no-debug-non-zts-20151012/mongodb.so, 9): image not found in Unknown on line 0
+[14-Jan-2019 13:17:57 UTC] PHP Warning:  Module 'oci8' already loaded in Unknown on line 0

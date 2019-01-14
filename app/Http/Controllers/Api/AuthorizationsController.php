@@ -76,10 +76,11 @@ class AuthorizationsController extends Controller
             if($user->type=='student' && is_null($user->f_uid) && is_null($user->parent_id)){
                 if ($request->parent_id ) {
                     $attributes['parent_id']=$request->parent_id;
+                    $p = User::find($request->parent_id);
                     // 将层级设为父级的层级 + 1
-                    $attributes['level'] = $user->cash_parent->level + 1;
+                    $attributes['level'] = $p->level + 1;
                     // 将 path 值设为父的 path 追加父 ID 以及最后跟上一个 - 分隔符
-                    $attributes['path'] = $user->cash_parent->path . $request->parent_id . '-';
+                    $attributes['path'] = $p->path . $request->parent_id . '-';
                 }
             }
             // 更新用户数据

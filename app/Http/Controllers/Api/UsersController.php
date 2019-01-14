@@ -189,7 +189,7 @@ class UsersController extends Controller
         //  先判断被录入的学员的 所有父级分销id的数量
         $p_student = $user_student->path_ids;
         $p_student_total = count($p_student);
-        if(!$user->one_level || !$user->two_level || !$user->three_level){
+        if($user->one_level<=0 || $user->two_level<=0 || $user->three_level<=0){
             return $this->response->errorForbidden('请先设置您的教练佣金后再录入学员！');
         }
         if($p_student_total==1){

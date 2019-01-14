@@ -8,10 +8,6 @@ class SendLog extends Model
 {
     protected $fillable = ['user_id','points','add_time'];
 
-    protected $dates = [
-        'add_time',
-    ];
-
     public function user()
     {
         return $this->belongsTo(User::class);
