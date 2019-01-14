@@ -22,38 +22,49 @@ class CashesController extends Controller
         $cashes = $query->get();
         return $this->response->collection($cashes, new CashTransformer());
     }
-    public function store(CashRequest $request, Cash $cash)
-    {
-        // 判断是否存在提现账号
-        $if_ex = $cash->where('user_id',$this->user()->id)->where('type',$request->type)->first();
-        if($if_ex){
-            return $this->response->errorForbidden('提现账号已存在，请勿重复提交');
-        }
-        $data = [
-                    'type'=>$request->type,
-                ];
-        if($request->type==1){
-            $data['name'] = $request->name;
-            $data['identity'] = $request->identity;
-        }elseif($request->type==2){
-            if ($request->wx_image_id) {
-                $image = Image::find($request->wx_image_id);
-                $data['wechat_code'] = $image->path;
-            }
-        }
-        $cash->fill($data);
-        // 添加/更新微信二维码
-        $cash->user_id = $this->user()->id;
-        $cash->save();
-        return $this->response->item($cash, new CashTransformer())
-            ->setStatusCode(201);
-    }
+    // public function store(CashRequest $request, Cash $cash)
+    // {
+    //     // 判断是否存在提现账号
+    //     $if_ex = $cash->where('user_id',$this->user()->id)->where('type',$request->type)->first();
+    //     if($if_ex){
+    //         return $this->response->errorForbidden('提现账号已存在，请勿重复提交');
+    //     }
+    //     $data = [
+    //                 'type'=>$request->type,
+    //             ];
+    //     if($request->type==1){
+    //         $data['name'] = $request->name;
+    //         $data['identity'] = $request->identity;
+    //     }elseif($request->type==2){
+    //         if ($request->wx_image_id) {
+    //             $image = Image::find($request->wx_image_id);
+    //             $data['wechat_code'] = $image->path;
+    //         }
+    //     }
+    //     $cash->fill($data);
+    //     // 添加/更新微信二维码
+    //     $cash->user_id = $this->user()->id;
+    //     $cash->save();
+    //     return $this->response->item($cash, new CashTransformer())
+    //         ->setStatusCode(201);
+    // }
 
     // 更新
     public function update(CashRequest $request,Cash $cash)
     {
         $user = $this->user();
         $attributes = $request->only(['type']);
+        // 判断参数
+        if($request->type==1){
+            if(!$request->has('name')){
+                return $this->response->errorForbidden('请输入支付宝提现姓名');
+            }
+        }
+        if($request->type==2){
+            if(!$request->has('wx_image_id')){
+                return $this->response->errorForbidden('请上传微信提现二维码');
+            }
+        }
         // 添加/更新微信二维码
         if ($request->wx_image_id && $request->type==2) {
             $image = Image::find($request->wx_image_id);
