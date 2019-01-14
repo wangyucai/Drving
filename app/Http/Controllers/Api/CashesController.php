@@ -13,7 +13,8 @@ class CashesController extends Controller
     // 获取提现账号
     public function index(Request $request,Cash $cash)
     {
-        $query = $cash->query();
+        $user = $this->user();
+        $query = $cash->where('user_id',$user->id);
         // 是否传分类
         if($type = $request->type){
             $query->where('type', $type);
