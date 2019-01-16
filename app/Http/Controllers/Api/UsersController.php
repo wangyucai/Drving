@@ -244,7 +244,7 @@ class UsersController extends Controller
             $params['paySign'] = generate_sign($params, config('wechat.payment.default.key'));
             unset($params['appId']);
             // 生成的订单入库
-            \DB::transaction(function () use ($out_trade_no, $user_id,$money,$student_id,$order,$attributes) {
+            \DB::transaction(function () use ($out_trade_no, $user_id,$money,$student_id,$one_amount,$two_amount,$three_amount,$order,$attributes) {
                 $data = [
                     'no' => $out_trade_no,
                     'user_id' => $user_id,
