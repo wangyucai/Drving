@@ -6,9 +6,6 @@ $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
     'middleware' => 'serializer:array'
 ], function ($api) {
-    // 微信支付回调通知
-    $api->post('notify/wxpay', 'WxPayController@notify')
-            ->name('api.wxpay.notify');
     // 增加调用频率限制 一分钟一次
     $api->group([
         'middleware' => 'api.throttle',
@@ -39,6 +36,12 @@ $api->version('v1', [
         // 获取小程序码
         $api->post('authorizations/weapp', 'AuthorizationsController@weappCode')
             ->name('api.authorizations.weappCode');
+        // 微信支付回调通知
+        $api->get('wxpay/notify', 'WxPayController@notify'); //回调处理订单
+        $api->post('wxpay/notify', 'WxPayController@notify')
+            ->name('api.wxpay.notify');
+
+
     });
 
     $api->group([

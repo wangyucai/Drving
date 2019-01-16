@@ -194,10 +194,19 @@ class UsersController extends Controller
         }
         if($p_student_total==1){
             $money = $user->one_level; // 支付的金额
+            $one_amount = $user->one_level;
+            $two_amount = 0.00; // 支付的金额
+            $three_amount = 0.00; // 支付的金额
         }elseif($p_student_total==2){
             $money = $user->one_level+$user->two_level; // 支付的金额
+            $one_amount = $user->one_level; // 支付的金额
+            $two_amount = $user->two_level; // 支付的金额
+            $three_amount = 0.00; // 支付的金额
         }elseif($p_student_total==3){
             $money = $user->one_level+$user->two_level+$user->three_level; // 支付的金额
+            $one_amount = $user->one_level; // 支付的金额
+            $two_amount = $user->two_level; // 支付的金额
+            $three_amount = $user->three_level; // 支付的金额
         }else{ // 根学员 不需要支付
             // 录入成功
             $user_student->update($attributes);
@@ -241,6 +250,9 @@ class UsersController extends Controller
                     'user_id' => $user_id,
                     'student_id' => $student_id,
                     'total_amount' => $money,
+                    'one_amount' => $one_amount,
+                    'two_amount' => $two_amount,
+                    'three_amount' => $three_amount,
                     'student_name' => $attributes['name'],
                     'student_carno' => $attributes['carno'],
                     'student_registration_site' => $attributes['registration_site']

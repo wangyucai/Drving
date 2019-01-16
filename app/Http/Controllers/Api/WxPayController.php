@@ -74,6 +74,7 @@ class WxPayController extends Controller
     public function notify()
     {
         $payment = \EasyWeChat::payment(); // 微信支付
+        file_put_contents("log.txt", "进来了".PHP_EOL, FILE_APPEND);
         $response = $payment->handlePaidNotify(function($message, $fail){
             // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
             $order = Order::where('no',$message['out_trade_no'])->first();
@@ -83,6 +84,8 @@ class WxPayController extends Controller
             }
             ///////////// <- 建议在这里调用微信的【订单查询】接口查一下该笔订单的情况，确认是已经支付 /////////////
             $pay_result = $payment->order->queryByOutTradeNumber($message['out_trade_no']);
+
+            file_put_contents("log.txt", $message['return_code'].PHP_EOL, FILE_APPEND);
 
             if ($message['return_code'] === 'SUCCESS') { // return_code 表示通信状态，不代表支付状态
                 // 用户是否支付成功

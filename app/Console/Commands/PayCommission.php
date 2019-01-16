@@ -72,108 +72,48 @@ class PayCommission extends Command
         foreach ($students as $student) {
             $p_student = $student->path_ids;
             $p_student_total = count($p_student);
-            // 判断该用户的录入教练是否和他推荐的属于同一个教练
+            $order = Order::where('user_id',$student->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
             if($p_student_total==1){ // 该用户获得一级学员佣金
-                $p_s = User::find($p_student[0]);
-                // 判断是否是同一个教练
-                if($p_s->f_uid == $student->f_uid){
-                    $trainer = User::find($p_s->f_uid);
-                    // 判断该教练是否支付佣金成功
-                    $order = Order::where('user_id',$p_s->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
-                    if($order){ // 发放积分
-                        User::where('id',$p_student[0])->increment('my_points', $trainer->one_level);
-                        SendLog::create(['user_id'=>$p_student[0],'points'=>$trainer->one_level,'add_time'=>time()]);
-                        $student->is_get_cash = true;
-                        $student->save();
-                    }else{
-                        $this->warn("教练{$p_s->f_uid}没有支付录入学员{$student->id} 时的佣金");
-                    }
+                // 判断录入他的教练是否支付佣金成功
+                if($order){ // 发放积分
+                    User::where('id',$p_student[0])->increment('my_points', $order->one_amount);
+                    SendLog::create(['user_id'=>$p_student[0],'points'=>$order->one_amount,'add_time'=>time()]);
+                    $student->is_get_cash = true;
+                    $student->save();
                 }else{
-                    $this->warn("学员{$student->id}与他的父一级学员{$p_s->id} 不是同一个教练");
+                    $this->warn("教练{$student->f_uid}没有支付录入学员{$student->id} 时的佣金");
                 }
             }elseif($p_student_total==2){ // 第一个用户获得一级学员佣金 第二个用户获得二级学员佣金
-                $p_s = User::find($p_student[0]);
-                $p_ss = User::find($p_student[1]);
-                // 判断是否是同一个教练
-                if($p_s->f_uid == $student->f_uid){
-                    $trainer = User::find($p_s->f_uid);
-                    // 判断该教练是否支付佣金成功
-                    $order = Order::where('user_id',$p_s->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
-                    if($order){ // 发放积分
-                        User::where('id',$p_student[0])->increment('my_points', $trainer->one_level);
-                        SendLog::create(['user_id'=>$p_student[0],'points'=>$trainer->one_level,'add_time'=>time()]);
-                        $student->is_get_cash = true;
-                        $student->save();
-                    }else{
-                        $this->warn("教练{$p_s->f_uid}没有支付录入学员{$student->id} 时的佣金");
-                    }
+                // 判断录入他的教练是否支付佣金成功
+                if($order){ // 发放积分
+                    User::where('id',$p_student[0])->increment('my_points', $order->one_amount);
+                    User::where('id',$p_student[1])->increment('my_points', $order->two_amount);
+                    // 记录获得积分情况
+                    \DB::table('send_logs')->insert([
+                        ['user_id' => $p_student[0], 'points' => $order->one_amount,'add_time'=>time()],
+                        ['user_id' => $p_student[1], 'points' => $order->two_amount,'add_time'=>time()],
+                    ]);
+                    $student->is_get_cash = true;
+                    $student->save();
                 }else{
-                    $this->warn("学员{$student->id}与他的父一级学员{$p_s->id} 不是同一个教练");
-                }
-                if($p_ss->f_uid == $student->f_uid){
-                    $trainer = User::find($p_ss->f_uid);
-                    // 判断该教练是否支付佣金成功
-                    $order = Order::where('user_id',$p_ss->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
-                    if($order){ // 发放积分
-                        User::where('id',$p_student[1])->increment('my_points', $trainer->two_level);
-                        SendLog::create(['user_id'=>$p_student[1],'points'=>$trainer->two_level,'add_time'=>time()]);
-                        $student->is_get_cash = true;
-                        $student->save();
-                    }else{
-                        $this->warn("教练{$p_ss->f_uid}没有支付录入学员{$student->id} 时的佣金");
-                    }
-                }else{
-                    $this->warn("学员{$student->id}与他的父二级学员{$p_ss->id} 不是同一个教练");
+                    $this->warn("教练{$student->f_uid}没有支付录入学员{$student->id} 时的佣金");
                 }
             }elseif($p_student_total==3){// 第一个用户获得一级学员佣金 第二个用户获得二级学员佣金 三得三级
-                $p_s = User::find($p_student[0]);
-                $p_ss = User::find($p_student[1]);
-                $p_sss = User::find($p_student[2]);
-                // 判断是否是同一个教练
-                if($p_s->f_uid == $student->f_uid){
-                    $trainer = User::find($p_s->f_uid);
-                    // 判断该教练是否支付佣金成功
-                    $order = Order::where('user_id',$p_s->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
-                    if($order){ // 发放积分
-                        User::where('id',$p_student[0])->increment('my_points', $trainer->one_level);
-                        SendLog::create(['user_id'=>$p_student[0],'points'=>$trainer->one_level,'add_time'=>time()]);
-                        $student->is_get_cash = true;
-                        $student->save();
-                    }else{
-                        $this->warn("教练{$p_s->f_uid}没有支付录入学员{$student->id} 时的佣金");
-                    }
+                // 判断录入他的教练是否支付佣金成功
+                if($order){ // 发放积分
+                    User::where('id',$p_student[0])->increment('my_points', $order->one_amount);
+                    User::where('id',$p_student[1])->increment('my_points', $order->two_amount);
+                    User::where('id',$p_student[2])->increment('my_points', $order->three_amount);
+                    // 记录获得积分情况
+                    \DB::table('send_logs')->insert([
+                        ['user_id' => $p_student[0], 'points' => $order->one_amount,'add_time'=>time()],
+                        ['user_id' => $p_student[1], 'points' => $order->two_amount,'add_time'=>time()],
+                        ['user_id' => $p_student[2], 'points' => $order->three_amount,'add_time'=>time()],
+                    ]);
+                    $student->is_get_cash = true;
+                    $student->save();
                 }else{
-                    $this->warn("学员{$student->id}与他的父一级学员{$p_s->id} 不是同一个教练");
-                }
-                if($p_ss->f_uid == $student->f_uid){
-                    $trainer = User::find($p_ss->f_uid);
-                    // 判断该教练是否支付佣金成功
-                    $order = Order::where('user_id',$p_ss->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
-                    if($order){ // 发放积分
-                        User::where('id',$p_student[1])->increment('my_points', $trainer->two_level);
-                        SendLog::create(['user_id'=>$p_student[1],'points'=>$trainer->two_level,'add_time'=>time()]);
-                        $student->is_get_cash = true;
-                        $student->save();
-                    }else{
-                        $this->warn("教练{$p_ss->f_uid}没有支付录入学员{$student->id} 时的佣金");
-                    }
-                }else{
-                    $this->warn("学员{$student->id}与他的父二级学员{$p_ss->id} 不是同一个教练");
-                }
-                if($p_sss->f_uid == $student->f_uid){
-                    $trainer = User::find($p_sss->f_uid);
-                    // 判断该教练是否支付佣金成功
-                    $order = Order::where('user_id',$p_sss->f_uid)->where('student_id',$student->id)->where('pay_status',1)->first();
-                    if($order){ // 发放积分
-                        User::where('id',$p_student[2])->increment('my_points', $trainer->two_level);
-                        SendLog::create(['user_id'=>$p_student[2],'points'=>$trainer->two_level,'add_time'=>time()]);
-                        $student->is_get_cash = true;
-                        $student->save();
-                    }else{
-                        $this->warn("教练{$p_sss->f_uid}没有支付录入学员{$student->id} 时的佣金");
-                    }
-                }else{
-                    $this->warn("学员{$student->id}与他的父三级学员{$p_sss->id} 不是同一个教练");
+                    $this->warn("教练{$student->f_uid}没有支付录入学员{$student->id} 时的佣金");
                 }
             }
         }
