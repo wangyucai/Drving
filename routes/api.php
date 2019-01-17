@@ -40,8 +40,6 @@ $api->version('v1', [
         $api->get('wxpay/notify', 'WxPayController@notify'); //回调处理订单
         $api->post('wxpay/notify', 'WxPayController@notify')
             ->name('api.wxpay.notify');
-
-
     });
 
     $api->group([
@@ -133,6 +131,9 @@ $api->version('v1', [
             // 查询预约情况
             $api->get('student/appointments', 'AppointmentsController@index')
                     ->name('api.appointments.list');
+            // 科目一安全学习视频接口
+            $api->get('student/videos', 'VideosController@index')
+                    ->name('api.videos.list');
         });
     });
 });

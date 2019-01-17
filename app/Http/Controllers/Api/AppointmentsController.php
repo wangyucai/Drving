@@ -36,54 +36,75 @@ class AppointmentsController extends Controller
     // 预约时刻表
     public function store(Request $request, Appointment $appointment)
     {
-
-        $s_time=date("Y-m-d",time())." 0:0:0";
-        $e_time=date("Y-m-d",time())." 24:00:00";
+        // 前一天晚上9点后--当天晚上九点前 可预约第二天的
+        $s_time=date("Y-m-d",time()-60*60*24)." 21:00:00";
+        $e_time=date("Y-m-d",time())." 20:59:59";
         $user = $this->user();
-        // 首先判断预约的教练当天的预约次数是否用完
-        $trainer_id = $request->trainer_id;
-        // 教练24小时可预约次数
-        $day_times = User::where('id',$trainer_id)->value('day_times');
-        // 当天此教练已被预约的次数
-        $appointmented_time = $appointment->where('trainer_id',$trainer_id)->whereBetween('yy_times',[strtotime($s_time), strtotime($e_time)])->count();
-        // 要预约的次数
-        $appointment_infos = json_decode($request->appointment_infos,true);
-        $appointment_time= count($appointment_infos);
-        // 可预约次数
-        $kyy_times = $day_times-$appointmented_time;
-        // 预约后剩下的次数
-        $sx_times = $kyy_times-$appointment_time;
-
-        if($sx_times<0){
-            return $this->response->errorForbidden('您选的次数已超过该教练当天可预约次数');
+        // 判断是否是学员，只有学员才可以预约
+        if($user->type != "student"){
+            return $this->response->errorForbidden('对不起，您不是学员，不能预约');
         }
-        // 添加操作
+        // 预约的科目
+        $type = $request->type;
+        // 预约教练的ID
+        $trainer_id = $request->trainer_id;
+        // 判断该科目的学员是否预约的是对应科目
+        if($type != $user->subject){
+            return $this->response->errorForbidden('您不属于该预约科目里的学员,请预约对应的科目');
+        }
+        // 该学员提交的预约申请
+        $appointment_infos = json_decode($request->appointment_infos,true);
         foreach ($appointment_infos as $k => $v) {
             foreach ($v as $key => $value) {
+                // 预约的时间段
                 $timess = Schedule::where('id',$value)->value('time');
-                // 判断该学员当天该时间段预约是否重复
-                $my = $appointment->where('user_id',$user->id)->where('trainer_id',$trainer_id)->where('schedule_id',$value)->whereBetween('yy_times',[strtotime($s_time), strtotime($e_time)])->count();
+                // 判断该学员当天该时间段该科目预约是否重复
+                $my = $appointment->where('user_id',$user->id)->where('type',$type)->where('trainer_id',$trainer_id)->where('schedule_id',$value)->whereBetween('created_at',[$s_time, $e_time])->count();
                 if($my>0){
                     return $this->response->errorForbidden('今天该教练该时间段'.$timess.'你已经预约过了,请勿重复预约');
                 }
-                // 判断该教练的改时间段是否预约次数已满
-                $times = $appointment->where('trainer_id',$trainer_id)->where('schedule_id',$value)->whereBetween('yy_times',[strtotime($s_time), strtotime($e_time)])->count();
-                // 该时间段教练的可预约次数
-                $trainer_time = TrainerTime::where('user_id',$trainer_id)->where('schedule_id',$value)->value('school_car_number');
-                if($times>=$trainer_time){
-                    return $this->response->errorForbidden('该教练该时间段'.$timess.'可预约次数已满');
+                // 查询预约的这个时间段能有几个学员预约
+                $student_all_times = TrainerTime::where('user_id',$trainer_id)->where('schedule_id',$value)->value('school_car_number');
+                // 查询此教练该科目该时间段今天有几个学员已经预约了
+                $times = $appointment->where('trainer_id',$trainer_id)->where('type',$type)->where('schedule_id',$value)->whereBetween('created_at',[$s_time, $e_time])->count();
+                if($times>=$student_all_times){
+                    return $this->response->errorForbidden('该教练的科目'.$type.'的时间段:'.$timess.'今天可预约次数已满,请选择其他时间段');
                 }
-                Appointment::create([
+                // 24小时限制预约次数设置里--
+                // 查询该科目24小时限制预约次数
+                if($type==2){
+                    $limit_times = User::where('id',$trainer_id)->value('day_times');
+                }else{
+                    $limit_times = User::where('id',$trainer_id)->value('day_times_3');
+                }
+                // 查询该学员每天该科目已经预约几个时间段
+                $my_times = $appointment->where('user_id',$user->id)->where('type',$type)->where('trainer_id',$trainer_id)->whereBetween('created_at',[$s_time, $e_time])->count();
+                if($my_times>=$limit_times){
+                    return $this->response->errorForbidden('您选择的预约时间段已超过您今天可预约的时间段次数');
+                }
+                $data[] = [
                     'user_id' => $user->id,
                     'trainer_id' => $trainer_id,
                     'schedule_id' => $value,
+                    'type' => $type,
                     'yy_times' => time()+86400, // 加一天的时间戳
-                ]);
+                ];
             }
         }
-        return $this->response->array([
-            'code' => '0',
-            'msg' => '预约成功',
-        ]);
+        if($data){
+            foreach ($data as $k => $v) {
+                Appointment::create($v);
+            }
+            return $this->response->array([
+                'code' => '0',
+                'msg' => '预约成功',
+            ]);
+        }else{
+            return $this->response->array([
+                'code' => -1,
+                'msg' => '预约失败',
+            ]);
+        }
+
     }
 }

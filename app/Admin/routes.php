@@ -53,4 +53,14 @@ Route::group([
     $router->put('renewals/{id}', 'RenewalsController@update');
     $router->delete('renewals/{id}', 'RenewalsController@destroy');
 
+    // 科目一安全学习管理
+    $router->get('videos', 'VideosController@index');
+    $router->get('videos/create', 'VideosController@create');
+    $router->get('videos/{id}', 'VideosController@show');
+    $router->get('videos/{id}/edit', 'VideosController@edit');
+    $router->post('videos', 'VideosController@store');
+    $router->put('videos/{id}', 'VideosController@update');
+    $router->delete('videos/{id}', 'VideosController@destroy');
+
+
 });

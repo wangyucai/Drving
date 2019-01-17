@@ -36,7 +36,12 @@ class TrainerTimesController extends Controller
                     'user_id' => $user->id,
                 ]);
         }
-        $attributes['day_times'] = $request->day_times;
+
+        if($type==2){
+            $attributes['day_times'] = $request->day_times;
+        }else{
+            $attributes['day_times_3'] = $request->day_times;
+        }
         $user->update($attributes);
         return $this->response->array([
             'code' => '0',

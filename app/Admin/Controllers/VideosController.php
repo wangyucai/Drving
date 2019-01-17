@@ -2,56 +2,53 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Schedule;
 use App\Http\Controllers\Controller;
+use App\Models\Video;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class SchedulesController extends Controller
+class VideosController extends Controller
 {
     use HasResourceActions;
 
     public function index(Content $content)
     {
         return $content
-            ->header('时刻表列表')
+            ->header('科目一安全学习列表')
             ->body($this->grid());
     }
-
 
     public function show($id, Content $content)
     {
         return $content
-            ->header('查看时刻表')
+            ->header('查看科目一安全学习视频')
             ->body($this->detail($id));
     }
 
     public function edit($id, Content $content)
     {
         return $content
-            ->header('编辑时刻表')
+            ->header('编辑科目一安全学习视频')
             ->body($this->form()->edit($id));
     }
 
     public function create(Content $content)
     {
         return $content
-            ->header('创建时刻表')
+            ->header('创建科目一安全学习视频')
             ->body($this->form());
     }
 
     protected function grid()
     {
-        $grid = new Grid(new Schedule);
+        $grid = new Grid(new Video);
 
         $grid->id('Id');
-        $grid->type('科目类型')->display(function ($value) {
-            return $value==2 ? '科目二' : '科目三';
-        });
-        $grid->time('时间段');
+        $grid->title('视频标题');
+        $grid->path('视频地址');
         $grid->disableExport();
 
         return $grid;
@@ -59,20 +56,19 @@ class SchedulesController extends Controller
 
     protected function detail($id)
     {
-        $show = new Show(Schedule::findOrFail($id));
+        $show = new Show(Video::findOrFail($id));
 
         $show->id('Id');
-        $show->type('科目类型');
-        $show->time('时间段');
-
+        $show->title('视频标题');
+        $show->path('视频地址');
         return $show;
     }
 
     protected function form()
     {
-        $form = new Form(new Schedule);
-        $form->radio('type', '类型')->options(Schedule::$typeMap)->rules('required');
-        $form->text('time', '时间段')->rules('required');
+        $form = new Form(new Video);
+        $form->text('title', '视频标题')->rules('required');
+        $form->file('path', '科目一安全学习')->rules('required');
         return $form;
     }
 }
