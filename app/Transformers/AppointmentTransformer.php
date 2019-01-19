@@ -19,6 +19,7 @@ class AppointmentTransformer extends TransformerAbstract
             'trainer_phone' => $appointment->trainer->phone,
             'trainer_trainingground_site' => $appointment->trainer->trainingground_site,
             'trainer_car_number' => $appointment->trainer->car_number,
+            'trainer_sub' => $appointment->type,
             'schedule' => $appointment->schedule->time,
         ];
     }
