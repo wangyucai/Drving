@@ -73,31 +73,31 @@ $api->version('v1', [
                 ->name('api.user.update');
             // 教练设置自己的时刻表
             $api->put('user/schedule', 'UsersController@schedule')
-                ->name('api.user.schedule');
+                ->name('api.user.schedule')->middleware('renew');
             // 教练查看自己的时刻表
             $api->get('trainer/times', 'TrainerTimesController@index')
-                ->name('api.trainer.index');
+                ->name('api.trainer.index')->middleware('renew');
             // 教练设置自己的时刻表-->新的接口
             $api->put('trainer/times', 'TrainerTimesController@update')
-                ->name('api.trainer.times');
+                ->name('api.trainer.times')->middleware('renew');
             // 教练设置自己的学员佣金
             $api->put('trainer/commissions', 'UsersController@commissions')
-                ->name('api.trainer.commissions');
+                ->name('api.trainer.commissions')->middleware('renew');
             // 支付宝提现
             $api->post('cashes', 'WithdrawCashController@alipayToTransfer')
                 ->name('api.cashes.alipayToTransfer');
             // 小程序提现
             $api->post('wx_cashes', 'WithdrawCashController@wxToTransfer')
-                ->name('api.cashes.wxToTransfer');
+                ->name('api.cashes.wxToTransfer')->middleware('renew');
             // 教练录入学员
             $api->put('user/student', 'UsersController@student')
-                ->name('api.student.update');
+                ->name('api.student.update')->middleware('renew');
             // 教练获取自己的学员列表
             $api->get('student', 'UsersController@studentList')
                 ->name('api.student.studentList');
             // 教练移动学员列表
             $api->post('student', 'UsersController@toStudent')
-                ->name('api.student.toStudent');
+                ->name('api.student.toStudent')->middleware('renew');
             // 我的教练信息
             $api->get('mytrainer', 'UsersController@myTrainer')
                 ->name('api.mytrainer.myTrainer');
@@ -106,22 +106,22 @@ $api->version('v1', [
                 ->name('api.card_cash.index');
             // 绑定卡号提现
             $api->post('card_cash', 'CashesController@store')
-                ->name('api.card_cash.store');
+                ->name('api.card_cash.store')->middleware('renew');
             // 修改提现账号
             $api->put('card_cash', 'CashesController@update')
-                ->name('api.card_cash.update');
+                ->name('api.card_cash.update')->middleware('renew');
             // 我的提现流水
             $api->get('my_cash', 'MyCashesController@index')
                 ->name('api.card_cash.index');
             // 我的提现申请
             $api->post('my_cash', 'MyCashesController@store')
-                ->name('api.card_cash.store');
+                ->name('api.card_cash.store')->middleware('renew');
             // 获取我的教练时刻表
             $api->get('student/schedule', 'SchedulesController@myTrainer')
-                    ->name('api.student.schedule');
+                    ->name('api.student.schedule')->middleware('renew');
             // 学员约车
             $api->post('student/appointments', 'AppointmentsController@store')
-                ->name('api.student.appointments');
+                ->name('api.student.appointments')->middleware('renew');
             // 用户发送模板消息
             $api->post('user/send_msg', 'SendMsgsController@send')
                 ->name('api.user.send');//->middleware('renew');
@@ -130,7 +130,7 @@ $api->version('v1', [
                 ->name('api.wxpay.renewals');
             // 查询预约情况
             $api->get('student/appointments', 'AppointmentsController@index')
-                    ->name('api.appointments.list');
+                    ->name('api.appointments.list')->middleware('renew');
             // 科目一安全学习视频接口
             $api->get('student/videos', 'VideosController@index')
                     ->name('api.videos.list');

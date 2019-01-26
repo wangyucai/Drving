@@ -78,8 +78,11 @@ class UsersController extends Controller
             'if_check'      => '审核状态',
         ]);
         if($request->if_check==2){
+            // 新教练送两个月会员
             $user->where('id',$request->user_id)->update([
                 'if_check' => $request->if_check,
+                'member_time' => $request->member_time,
+                'is_get_cash' => true,
             ]);
         }else{
             // 清空教练入驻的信息-->变成学员

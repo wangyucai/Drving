@@ -28,6 +28,7 @@ $('.check-user').on('click', function () {
         data: JSON.stringify({
           'user_id':$(this).data('id'),
           'if_check':$(this).data('check'),
+          'member_time':$(this).data('time'),
           _token: LA.token,
         }),
         contentType: 'application/json',
@@ -49,8 +50,10 @@ SCRIPT;
     protected function render()
     {
         Admin::script($this->script());
+        // 新注册教练送两个月会员
+        $dq_time = date("Y-m-d H:i:s",strtotime("+2 months"));
         if($this->if_check==1){
-            return "<a style='margin-right: 10px;' class='btn btn-xs btn-success check-user' data-id='{$this->id}' data-check='2'>通过</a><a style='margin-right: 10px;' class='btn btn-xs btn-danger check-user' data-id='{$this->id}' data-check='3'>拒绝</a>";
+            return "<a style='margin-right: 10px;' class='btn btn-xs btn-success check-user' data-id='{$this->id}' data-check='2' data-time='{$dq_time}'>通过</a><a style='margin-right: 10px;' class='btn btn-xs btn-danger check-user' data-id='{$this->id}' data-check='3' data-time='{$dq_time}'>拒绝</a>";
         }else{
             return "<a></a>";
         }
